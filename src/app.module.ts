@@ -9,6 +9,7 @@ import { AnnouncementsModule } from './announcements/announcements.module';
 import { EventsModule } from './events/events.module';
 import { BroadcastModule } from './broadcast/broadcast.module';
 import { WhatsappModule } from './whatsapp/whatsapp.module';
+import { TelegramModule } from './telegram/telegram.module';
 import { DepartmentsModule } from './departments/departments.module';
 
 @Module({
@@ -27,6 +28,7 @@ import { DepartmentsModule } from './departments/departments.module';
     EventsModule,
     BroadcastModule,
     WhatsappModule,
+    TelegramModule,
   ],
 })
 export class AppModule {}

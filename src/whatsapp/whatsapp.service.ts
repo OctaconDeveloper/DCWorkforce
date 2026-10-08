@@ -394,6 +394,7 @@ export class WhatsappService implements OnModuleInit, OnModuleDestroy {
       effectivePhone || rawPhone,
       quotedText,
       msg,
+      lid,
     );
   }
 
@@ -408,6 +409,7 @@ export class WhatsappService implements OnModuleInit, OnModuleDestroy {
     rawPhone = '',
     quotedText?: string,
     msg?: proto.IWebMessageInfo,
+    lid?: string,
   ) {
     const lower = commandText.toLowerCase().trim();
     const isLeader = Boolean(isAdmin || (worker && (worker.isHOD || worker.isUnitHead)));
@@ -420,14 +422,18 @@ export class WhatsappService implements OnModuleInit, OnModuleDestroy {
     // ==========================================
     // 1. CATEGORY SUB-MENUS & SHORTCUTS
     // ==========================================
-    // Category 1: Profile & Duty
+    // Category 1: Profile & Duty / Onboarding
     if (
       (!quotedText && lower === '1') ||
       lower === 'profile menu' ||
       lower === 'my duty' ||
       lower === 'duty menu'
     ) {
-      await this.menuCommandService.sendProfileSubMenu(worker, remoteJid, isAdmin);
+      if (worker) {
+        await this.menuCommandService.sendProfileSubMenu(worker, remoteJid, isAdmin);
+      } else {
+        await this.menuCommandService.sendProfileSubMenu(null, remoteJid, isAdmin);
+      }
       return;
     }
 
@@ -856,6 +862,27 @@ export class WhatsappService implements OnModuleInit, OnModuleDestroy {
       lower === '9'
     ) {
       await this.approvalsCommandService.handleViewMembers(worker, remoteJid, isAdmin);
+      return;
+    }
+
+    // ==========================================
+    // Leadership: Member Search (Admin, HOD, Unit Head)
+    // ==========================================
+    if (
+      lower.startsWith('search') ||
+      lower.startsWith('find') ||
+      lower.startsWith('#search') ||
+      lower.startsWith('#find')
+    ) {
+      let query = '';
+      if (lower.startsWith('search member ') || lower.startsWith('find member ')) {
+        query = commandText.replace(/^(search|find)\s+members?\s+/i, '').trim();
+      } else if (lower.startsWith('search ') || lower.startsWith('find ')) {
+        query = commandText.replace(/^(search|find)\s+/i, '').trim();
+      } else if (lower.startsWith('#search ') || lower.startsWith('#find ')) {
+        query = commandText.replace(/^#(search|find)\s+/i, '').trim();
+      }
+      await this.approvalsCommandService.handleSearchMembers(query, worker, remoteJid, isAdmin);
       return;
     }
 

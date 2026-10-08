@@ -50,56 +50,17 @@ export class OnboardingCommandService {
     rawPhone?: string | null,
     isAdmin = false,
   ) {
-    const lower = commandText.toLowerCase().trim();
+    this.clearPendingSession(remoteJid);
 
-    // Extract identifier argument if provided (e.g., "onboard 08012345678" or "link john@email.com")
-    let identifier = '';
-    const prefixes = [
-      'onboard',
-      'onboarding',
-      'claim profile',
-      'claim account',
-      'claim',
-      'link account',
-      'link profile',
-      'link device',
-      'link',
-      'verify me',
-      'verify account',
-      'verify',
-      'change device',
-      'device change',
-    ];
-
-    for (const prefix of prefixes) {
-      if (lower.startsWith(prefix)) {
-        identifier = commandText.substring(prefix.length).replace(/[:=-]/g, '').trim();
-        break;
-      }
-    }
-
-    // If identifier was provided directly on the same line, process immediately
-    if (identifier && identifier.length >= 3) {
-      this.clearPendingSession(remoteJid);
-      await this.processOnboarding(remoteJid, identifier, lid, rawPhone, isAdmin);
-      return;
-    }
-
-    // Otherwise, start interactive onboarding prompt
-    this.pendingSessions.set(remoteJid, Date.now());
-
-    const prompt =
-      `🚀 *WORKER SELF-ONBOARDING & DEVICE LINKING*\n` +
+    await this.whatsappService.sendMessage(
+      remoteJid,
+      `⚠️ *ONBOARDING VIA WHATSAPP IS DISABLED*\n` +
       `────────────────────────────\n` +
-      `Welcome to the Dominion City Kubwa Workforce Portal!\n\n` +
-      `If you have already been registered as a worker (or changed your WhatsApp device/phone number), you can link your profile immediately in one simple step.\n\n` +
-      `📱 *Please reply with your registered Phone Number or Email:*\n` +
-      `_(e.g., *08012345678* or *john@example.com*)_\n\n` +
-      `────────────────────────────\n` +
-      `💡 _New to DC Kubwa Workforce? Reply *register* to fill the membership form._\n` +
-      `↩️ _Reply *menu* to cancel and return to main menu._`;
-
-    await this.whatsappService.sendMessage(remoteJid, prompt);
+      `Direct profile onboarding and device claiming via WhatsApp has been disabled.\n\n` +
+      `• *New to workforce?* Type *register* or *template* to fill out the official worker registration form.\n` +
+      `• *Already registered?* If your profile is not linked or you changed phone numbers, please contact your Head of Department (HOD) or Church Administrator.\n\n` +
+      `_Type *menu* to return to the main menu._`,
+    );
   }
 
   /**
@@ -113,7 +74,7 @@ export class OnboardingCommandService {
     isAdmin = false,
   ) {
     this.clearPendingSession(remoteJid);
-    await this.processOnboarding(remoteJid, input, lid, rawPhone, isAdmin);
+    await this.handleOnboardCommand(input, remoteJid, lid, rawPhone, isAdmin);
   }
 
   /**
@@ -151,10 +112,10 @@ export class OnboardingCommandService {
         : '';
 
       const successNotice =
-        `🎉 *ONBOARDING COMPLETED SUCCESSFULLY!*\n` +
+        `🎉 *ONBOARDING COMPLETED AUTOMATICALLY!*\n` +
         `────────────────────────────\n` +
+        `We detected your WhatsApp number and verified your workforce profile!\n\n` +
         `Welcome, *${updatedWorker.fullName}*!\n` +
-        `Your WhatsApp device has been linked to your church workforce profile.\n\n` +
         `📌 *Department:* ${updatedWorker.department.toUpperCase()}\n` +
         (updatedWorker.unit ? `📌 *Unit:* ${updatedWorker.unit}\n` : '') +
         `📌 *Role:* ${updatedWorker.role}${leaderTag}\n` +
@@ -191,13 +152,12 @@ export class OnboardingCommandService {
     // CASE 3: No Matching Record Found
     // ==========================================
     const notFoundMessage =
-      `🔍 *NO REGISTERED RECORD FOUND*\n` +
+      `🔍 *NO REGISTERED WORKER PROFILE FOUND*\n` +
       `────────────────────────────\n` +
-      `We could not find an active worker profile matching: "*${cleanInput}*".\n\n` +
+      `Your WhatsApp number (*${cleanInput}*) is not yet registered in the church workforce database.\n\n` +
       `💡 *Next Steps:*\n` +
-      `1️⃣ *Check for typos:* Reply with *onboard <phone>* (e.g. *onboard 08012345678*) or your registered email.\n` +
-      `2️⃣ *New Workforce Member:* Reply *register* to receive the registration form.\n` +
-      `3️⃣ *Assistance:* Contact your Head of Department or Church Admin to verify your recorded phone number.\n\n` +
+      `1️⃣ *New Worker:* Reply *register* to receive the registration form and join workforce!\n` +
+      `2️⃣ *Already Registered with a different number?:* Contact your Head of Department (HOD) or Church Admin to update your official phone number.\n\n` +
       `↩️ _Reply *menu* to return to the main menu._`;
 
     await this.whatsappService.sendMessage(remoteJid, notFoundMessage);

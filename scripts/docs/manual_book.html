@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DC Kubwa Workforce Management System — Comprehensive Bot Manual</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+    :root {
+      --primary: #1e3a8a;
+      --primary-light: #3b82f6;
+      --primary-dark: #172554;
+      --accent: #d97706;
+      --wa-green: #00a884;
+      --wa-bg: #eefeeb;
+      --wa-bubble: #d9fdd3;
+      --tg-blue: #229ed9;
+      --tg-bg: #f0f7fc;
+      --tg-bubble: #e2f0fb;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --bg-light: #f8fafc;
+      --border-color: #e2e8f0;
+      
+      --role-admin: #dc2626;
+      --role-admin-bg: #fef2f2;
+      --role-hod: #7c3aed;
+      --role-hod-bg: #f5f3ff;
+      --role-unit: #0284c7;
+      --role-unit-bg: #f0f9ff;
+      --role-worker: #16a34a;
+      --role-worker-bg: #f0fdf4;
+      --role-guest: #64748b;
+      --role-guest-bg: #f8fafc;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text-main);
+      background-color: #ffffff;
+      line-height: 1.6;
+      font-size: 13.5px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    @page {
+      size: A4 portrait;
+      margin: 18mm 16mm 20mm 16mm;
+      @bottom-right {
+        content: counter(page);
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 9pt;
+        color: #94a3b8;
+      }
+      @bottom-left {
+        content: "Dominion City Kubwa • Workforce Bot Manual";
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 9pt;
+        color: #94a3b8;
+      }
+    }
+
+    .page-break {
+      page-break-after: always;
+      break-after: page;
+    }
+
+    .avoid-break {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    /* Cover Page */
+    .cover-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 60px 40px;
+      background: linear-gradient(145deg, #0f172a 0%, #1e3a8a 50%, #1e1b4b 100%);
+      color: #ffffff;
+      border-radius: 12px;
+      page-break-after: always;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cover-page::before {
+      content: "";
+      position: absolute;
+      top: -10%;
+      right: -10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.25) 0%, rgba(0,0,0,0) 70%);
+      border-radius: 50%;
+    }
+
+    .cover-header {
+      z-index: 1;
+    }
+
+    .church-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: #93c5fd;
+      margin-bottom: 24px;
+    }
+
+    .cover-title {
+      font-size: 38px;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.5px;
+      margin-bottom: 16px;
+      color: #ffffff;
+    }
+
+    .cover-title span {
+      background: linear-gradient(90deg, #60a5fa, #f59e0b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .cover-subtitle {
+      font-size: 17px;
+      font-weight: 400;
+      color: #cbd5e1;
+      max-width: 600px;
+      line-height: 1.5;
+    }
+
+    .cover-roles {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 32px 0;
+      z-index: 1;
+    }
+
+    .role-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .role-pill.admin { border-left: 4px solid #ef4444; }
+    .role-pill.hod { border-left: 4px solid #a855f7; }
+    .role-pill.unit { border-left: 4px solid #38bdf8; }
+    .role-pill.worker { border-left: 4px solid #4ade80; }
+
+    .cover-footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      font-size: 12px;
+      color: #94a3b8;
+      z-index: 1;
+    }
+
+    .cover-meta strong {
+      display: block;
+      color: #ffffff;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    /* Table of Contents */
+    .toc-container {
+      background: var(--bg-light);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 30px;
+    }
+
+    .toc-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px 28px;
+    }
+
+    .toc-section-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 8px;
+      border-bottom: 2px solid #cbd5e1;
+      padding-bottom: 4px;
+    }
+
+    .toc-list {
+      list-style: none;
+    }
+
+    .toc-list li {
+      margin-bottom: 6px;
+      font-size: 12.5px;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .toc-list li a {
+      color: var(--text-main);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    /* Headings & Section Styling */
+    h1, h2, h3, h4 {
+      color: var(--primary-dark);
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    h1 {
+      font-size: 26px;
+      border-bottom: 2.5px solid var(--primary-light);
+      padding-bottom: 8px;
+      margin: 32px 0 16px 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    h2 {
+      font-size: 19px;
+      margin: 24px 0 12px 0;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h3 {
+      font-size: 15px;
+      margin: 18px 0 8px 0;
+      color: var(--text-main);
+    }
+
+    p {
+      margin-bottom: 12px;
+      color: var(--text-main);
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-block;
+      padding: 3px 9px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+
+    .badge-admin { background: var(--role-admin-bg); color: var(--role-admin); border: 1px solid #fca5a5; }
+    .badge-hod { background: var(--role-hod-bg); color: var(--role-hod); border: 1px solid #d8b4fe; }
+    .badge-unit { background: var(--role-unit-bg); color: var(--role-unit); border: 1px solid #7dd3fc; }
+    .badge-worker { background: var(--role-worker-bg); color: var(--role-worker); border: 1px solid #86efac; }
+    .badge-guest { background: var(--role-guest-bg); color: var(--role-guest); border: 1px solid #cbd5e1; }
+    .badge-wa { background: var(--wa-bg); color: #065f46; border: 1px solid #a7f3d0; }
+    .badge-tg { background: var(--tg-bg); color: #0369a1; border: 1px solid #bae6fd; }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px 0;
+      font-size: 12.5px;
+      background: #ffffff;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    th, td {
+      padding: 10px 14px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background-color: #f1f5f9;
+      color: var(--primary-dark);
+      font-weight: 700;
+      border-bottom: 1.5px solid var(--border-color);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    td {
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    tr:nth-child(even) td {
+      background-color: #f8fafc;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      background-color: #f1f5f9;
+      color: #0f172a;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11.5px;
+      border: 1px solid #e2e8f0;
+    }
+
+    /* Chat Simulation Boxes */
+    .chat-box {
+      margin: 16px 0;
+      border-radius: 10px;
+      padding: 16px;
+      position: relative;
+    }
+
+    .chat-box.whatsapp {
+      background-color: #f0f2f5;
+      border-left: 5px solid var(--wa-green);
+    }
+
+    .chat-box.telegram {
+      background-color: #f4f6fb;
+      border-left: 5px solid var(--tg-blue);
+    }
+
+    .chat-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .chat-bubble {
+      background-color: #ffffff;
+      padding: 12px 14px;
+      border-radius: 8px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      white-space: pre-wrap;
+      line-height: 1.5;
+      color: #1e293b;
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .chat-box.whatsapp .chat-bubble {
+      background-color: var(--wa-bubble);
+      border-color: #bbf7d0;
+    }
+
+    .chat-box.telegram .chat-bubble {
+      background-color: var(--tg-bubble);
+      border-color: #bae6fd;
+    }
+
+    .callout {
+      padding: 14px 18px;
+      border-radius: 8px;
+      margin: 16px 0;
+      font-size: 13px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .callout-icon {
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .callout.info { background-color: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+    .callout.warning { background-color: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
+    .callout.danger { background-color: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+    .callout.success { background-color: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+  </style>
+</head>
+<body>
+
+  <!-- COVER PAGE -->
+  <div class="cover-page">
+    <div class="cover-header">
+      <div class="church-badge">
+        ⛪ Dominion City Kubwa • Workforce Management System
+      </div>
+      <h1 class="cover-title">
+        The Official Workforce Bot<br>
+        <span>Operation Manual & Command Book</span>
+      </h1>
+      <p class="cover-subtitle">
+        A comprehensive guide covering every bot feature, command syntax, member search tools, broadcast engine, and administrative workflows across WhatsApp & Telegram.
+      </p>
+
+      <div class="cover-roles">
+        <div class="role-pill admin">🔴 <strong>Church Administrators</strong></div>
+        <div class="role-pill hod">🟣 <strong>Heads of Departments (HODs)</strong></div>
+        <div class="role-pill unit">🔵 <strong>Heads of Units (Unit Heads)</strong></div>
+        <div class="role-pill worker">🟢 <strong>Registered Workforce & Members</strong></div>
+      </div>
+    </div>
+
+    <div class="cover-footer">
+      <div class="cover-meta">
+        <strong>DOMINION CITY KUBWA WORKFORCE PORTAL</strong>
+        <span>Systems Engineering & Media Directorate • Version 2.5.0</span>
+      </div>
+      <div class="cover-date">
+        Published: October 2026<br>
+        Platforms: WhatsApp Baileys & Telegram Bot API
+      </div>
+    </div>
+  </div>
+
+  <!-- TABLE OF CONTENTS -->
+  <div class="toc-container avoid-break">
+    <div class="toc-title">📖 Manual Book Contents</div>
+    <div class="toc-grid">
+      <div>
+        <div class="toc-section-title">Part I: Architecture & Roles</div>
+        <ul class="toc-list">
+          <li><span>1. System Architecture & Capabilities</span> <span>03</span></li>
+          <li><span>2. Role Hierarchy & Permission Matrix</span> <span>04</span></li>
+        </ul>
+
+        <div class="toc-section-title" style="margin-top: 14px;">Part II: Registration & Search</div>
+        <ul class="toc-list">
+          <li><span>3. Registration & Duplicate Phone Rejection</span> <span>05</span></li>
+          <li><span>4. Member Search Tool for Leaders</span> <span>06</span></li>
+        </ul>
+
+        <div class="toc-section-title" style="margin-top: 14px;">Part III: WhatsApp Bot Reference</div>
+        <ul class="toc-list">
+          <li><span>5. Interactive Menus & Quick Shortcuts</span> <span>07</span></li>
+          <li><span>6. All Commands, Broadcasts & Responses</span> <span>08</span></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="toc-section-title">Part IV: Telegram Bot Reference</div>
+        <ul class="toc-list">
+          <li><span>7. Telegram Slash Commands & Keyboards</span> <span>09</span></li>
+          <li><span>8. Inline Approvals & Actions</span> <span>10</span></li>
+        </ul>
+
+        <div class="toc-section-title" style="margin-top: 14px;">Part V: Role SOPs & Appendix</div>
+        <ul class="toc-list">
+          <li><span>9. Standard Operating Procedures by Role</span> <span>11</span></li>
+          <li><span>10. Spreadsheet Import Specs & FAQ</span> <span>12</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART I: SYSTEM OVERVIEW -->
+  <h1>Part I: System Overview & Permissions</h1>
+
+  <h2>1. Role Hierarchy & Access Matrix</h2>
+  <table class="avoid-break">
+    <thead>
+      <tr>
+        <th>Feature / Command</th>
+        <th><span class="badge badge-admin">Admin</span></th>
+        <th><span class="badge badge-hod">HOD</span></th>
+        <th><span class="badge badge-unit">Unit Head</span></th>
+        <th><span class="badge badge-worker">Worker</span></th>
+        <th><span class="badge badge-guest">Guest</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Profile, Duty Schedule, Info</strong></td>
+        <td>✅ Full</td>
+        <td>✅ Full</td>
+        <td>✅ Full</td>
+        <td>✅ Own Dept</td>
+        <td>❌ Prompt</td>
+      </tr>
+      <tr>
+        <td><strong>Member Search (<code>search &lt;query&gt;</code>)</strong></td>
+        <td>✅ All Depts</td>
+        <td>✅ Own Dept</td>
+        <td>✅ Own Unit</td>
+        <td>❌ Denied</td>
+        <td>❌ Denied</td>
+      </tr>
+      <tr>
+        <td><strong>Worker Registration Submission</strong></td>
+        <td>✅ Admin Mode</td>
+        <td>✅ View</td>
+        <td>✅ View</td>
+        <td>✅ View</td>
+        <td>✅ Submit</td>
+      </tr>
+      <tr>
+        <td><strong>Approve/Reject Registrations</strong></td>
+        <td>✅ All Depts</td>
+        <td>✅ Own Dept</td>
+        <td>✅ Own Unit</td>
+        <td>❌ Denied</td>
+        <td>❌ Denied</td>
+      </tr>
+      <tr>
+        <td><strong>Broadcast to Unit</strong></td>
+        <td>✅ Any Unit</td>
+        <td>✅ Dept Units</td>
+        <td>✅ Own Unit</td>
+        <td>❌ Denied</td>
+        <td>❌ Denied</td>
+      </tr>
+      <tr>
+        <td><strong>Broadcast to Department</strong></td>
+        <td>✅ Any Dept</td>
+        <td>✅ Own Dept</td>
+        <td>❌ Denied</td>
+        <td>❌ Denied</td>
+        <td>❌ Denied</td>
+      </tr>
+      <tr>
+        <td><strong>Church-Wide Broadcast (<code>all</code>)</strong></td>
+        <td>✅ Global</td>
+        <td>❌ Denied</td>
+        <td>❌ Denied</td>
+        <td>❌ Denied</td>
+        <td>❌ Denied</td>
+      </tr>
+      <tr>
+        <td><strong>Custom Broadcast Groups</strong></td>
+        <td>✅ Full Control</td>
+        <td>❌ Denied</td>
+        <td>❌ Denied</td>
+        <td>❌ Denied</td>
+        <td>❌ Denied</td>
+      </tr>
+      <tr>
+        <td><strong>Excel / CSV Bulk Import & #stats</strong></td>
+        <td>✅ Exclusive</td>
+        <td>❌ Denied</td>
+        <td>❌ Denied</td>
+        <td>❌ Denied</td>
+        <td>❌ Denied</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-break"></div>
+
+  <!-- PART II: REGISTRATION & SEARCH -->
+  <h1>Part II: Registration & Member Search</h1>
+
+  <h2>2. Registration & Duplicate Rejection Safeguard</h2>
+  <p>
+    To ensure database integrity and eliminate duplicate profiles, all new registration attempts are validated against existing records:
+  </p>
+
+  <div class="callout danger avoid-break">
+    <div class="callout-icon">🛡️</div>
+    <div>
+      <strong>Automatic Phone Number Collision Check:</strong><br>
+      If a registration form is submitted containing a phone number that is already registered to an active worker or pending approval, the submission is immediately rejected with a detailed notification identifying the existing worker profile.
+    </div>
+  </div>
+
+  <div class="chat-box whatsapp avoid-break">
+    <div class="chat-header">
+      <span class="platform">🟢 WhatsApp • Duplicate Registration Rejection</span>
+    </div>
+    <div class="chat-bubble">❌ *REGISTRATION REJECTED: PHONE ALREADY REGISTERED*
+────────────────────────────
+A church worker record already exists with the phone number *08012345678*:
+
+• *Full Name:* Brother David Eze
+• *Department:* MEDIA (Sound)
+• *Role:* Member
+• *Status:* Active ✅
+
+💡 *Note:* If you need to update your details or change departments, please contact your Head of Department (HOD) or Church Administrator.</div>
+  </div>
+
+  <h2>3. Member Search Tool for Leadership</h2>
+  <p>
+    Church Administrators, Department Heads (HODs), and Unit Heads can search for registered workforce members across multiple parameters (Name, Phone Number, Unit, Role, Address).
+  </p>
+
+  <div class="chat-box whatsapp avoid-break">
+    <div class="chat-header">
+      <span class="platform">🟢 WhatsApp • Member Search Output</span>
+      <span>Command: search Sound</span>
+    </div>
+    <div class="chat-bubble">🔍 *SEARCH RESULTS — MEDIA DEPARTMENT (2 found)*
+───────────────────────────
+*1. DAVID EZE* [🎖️ Unit Head]
+• *Phone:* 08012345678
+• *Dept:* MEDIA | Unit: *Sound*
+• *Role:* Sound Lead
+• *DLI:* Yes | *DCA:* Yes
+
+*2. EMMANUEL OKAFOR* [Member]
+• *Phone:* 08099887766
+• *Dept:* MEDIA | Unit: *Sound*
+• *Role:* Member
+• *DLI:* Yes | *DCA:* No</div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- PART III: WHATSAPP BOT REFERENCE -->
+  <h1>Part III: WhatsApp Bot Reference</h1>
+
+  <h2>4. Complete Command Catalog</h2>
+  <table class="avoid-break">
+    <thead>
+      <tr>
+        <th>Command</th>
+        <th>Role</th>
+        <th>Syntax / Example</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>menu</code></td>
+        <td><span class="badge badge-guest">Public</span></td>
+        <td><code>menu</code></td>
+        <td>Main category navigation menu.</td>
+      </tr>
+      <tr>
+        <td><code>search &lt;query&gt;</code></td>
+        <td><span class="badge badge-unit">Unit Head</span></td>
+        <td><code>search Emeka</code></td>
+        <td>Searches workforce members within user's leadership scope.</td>
+      </tr>
+      <tr>
+        <td><code>info</code> / <code>status</code></td>
+        <td><span class="badge badge-worker">Worker</span></td>
+        <td><code>info</code></td>
+        <td>Worker profile, leadership badges, DLI status, and address.</td>
+      </tr>
+      <tr>
+        <td><code>schedule</code></td>
+        <td><span class="badge badge-worker">Worker</span></td>
+        <td><code>schedule</code></td>
+        <td>Upcoming duty dates, times, and descriptions.</td>
+      </tr>
+      <tr>
+        <td><code>pending</code></td>
+        <td><span class="badge badge-unit">Unit Head</span></td>
+        <td><code>pending</code></td>
+        <td>Lists pending worker applications with approval indices.</td>
+      </tr>
+      <tr>
+        <td><code>accept &lt;#&gt;</code></td>
+        <td><span class="badge badge-unit">Unit Head</span></td>
+        <td><code>accept 1</code></td>
+        <td>Approves pending applicant #1 and registers worker.</td>
+      </tr>
+      <tr>
+        <td><code>reject &lt;#&gt;</code></td>
+        <td><span class="badge badge-unit">Unit Head</span></td>
+        <td><code>reject 1</code></td>
+        <td>Declines pending applicant #1 with optional reason.</td>
+      </tr>
+      <tr>
+        <td><code>members</code></td>
+        <td><span class="badge badge-unit">Unit Head</span></td>
+        <td><code>members</code></td>
+        <td>Lists all active workforce members in unit/department.</td>
+      </tr>
+      <tr>
+        <td><code>broadcast unit</code></td>
+        <td><span class="badge badge-unit">Unit Head</span></td>
+        <td><code>broadcast unit &lt;msg&gt;</code></td>
+        <td>Dispatches notification to all workers in sender's unit.</td>
+      </tr>
+      <tr>
+        <td><code>broadcast dept</code></td>
+        <td><span class="badge badge-hod">HOD</span></td>
+        <td><code>broadcast dept &lt;msg&gt;</code></td>
+        <td>Dispatches notification to all workers in sender's department.</td>
+      </tr>
+      <tr>
+        <td><code>broadcast all</code></td>
+        <td><span class="badge badge-admin">Admin</span></td>
+        <td><code>broadcast all &lt;msg&gt;</code></td>
+        <td>Sends church-wide broadcast notification to all workers.</td>
+      </tr>
+      <tr>
+        <td><code>groups</code></td>
+        <td><span class="badge badge-admin">Admin</span></td>
+        <td><code>groups</code></td>
+        <td>Manage custom broadcast groups (add, remove, broadcast).</td>
+      </tr>
+      <tr>
+        <td><code>#stats</code></td>
+        <td><span class="badge badge-admin">Admin</span></td>
+        <td><code>#stats</code></td>
+        <td>Live workforce analytics and department breakdown.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="margin-top: 36px; padding-top: 18px; border-top: 2px solid var(--border-color); text-align: center; color: var(--text-muted); font-size: 11px;">
+    <strong>DOMINION CITY KUBWA • WORKFORCE MANAGEMENT BOT SYSTEM</strong><br>
+    © 2026 Dominion City Kubwa. All rights reserved. • Raising leaders that transform society.
+  </div>
+
+</body>
+</html>

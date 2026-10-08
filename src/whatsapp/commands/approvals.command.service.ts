@@ -167,6 +167,89 @@ export class ApprovalsCommandService {
   }
 
   /**
+   * Action: Search Members (Admin, HOD, and Unit Heads)
+   */
+  async handleSearchMembers(
+    query: string,
+    worker: Worker | null,
+    remoteJid: string,
+    isAdmin = false,
+  ) {
+    const isAuthorized = Boolean(isAdmin || (worker && (worker.isHOD || worker.isUnitHead)));
+
+    if (!isAuthorized) {
+      await this.whatsappService.sendMessage(
+        remoteJid,
+        `🔒 *Leadership Access Only:* Member search is reserved for Unit Heads, Department Heads, and System Administrators.`,
+      );
+      return;
+    }
+
+    const searchTerm = query.trim();
+    if (!searchTerm) {
+      await this.whatsappService.sendMessage(
+        remoteJid,
+        `🔍 *MEMBER SEARCH GUIDE*\n` +
+        `───────────────────────────\n` +
+        `Search active church workers by name, phone number, unit, or role.\n\n` +
+        `*Usage:*\n` +
+        `• \`search <name, phone, unit, or role>\`\n\n` +
+        `*Examples:*\n` +
+        `• \`search David\`\n` +
+        `• \`search 08012345678\`\n` +
+        `• \`search Sound\`\n` +
+        `• \`search Ushering\`\n\n` +
+        `_Type *menu* to return._`,
+      );
+      return;
+    }
+
+    const members = await this.workersService.searchMembersForLeader(searchTerm, worker, isAdmin);
+
+    let scopeLabel = 'ALL DEPARTMENTS';
+    if (!isAdmin && worker) {
+      scopeLabel = worker.isHOD
+        ? `${worker.department.toUpperCase()} DEPARTMENT`
+        : `${worker.department.toUpperCase()} (${worker.unit || 'UNIT'})`;
+    }
+
+    if (members.length === 0) {
+      await this.whatsappService.sendMessage(
+        remoteJid,
+        `🔍 *SEARCH RESULTS — ${scopeLabel}*\n` +
+        `───────────────────────────\n` +
+        `No active workers found matching "*${searchTerm}*" in your scope.\n\n` +
+        `_Type *members* to see full directory or *menu* to return._`,
+      );
+      return;
+    }
+
+    let message =
+      `🔍 *SEARCH RESULTS — ${scopeLabel} (${members.length} found)*\n` +
+      `───────────────────────────\n`;
+
+    for (let i = 0; i < members.length; i++) {
+      const m = members[i];
+      let leaderTag = ' [Member]';
+      if (m.isHOD) leaderTag = ' [👑 HOD]';
+      else if (m.isUnitHead) leaderTag = ' [🎖️ Unit Head]';
+
+      const unitText = m.unit ? ` | Unit: *${m.unit}*` : '';
+      message +=
+        `\n*${i + 1}. ${m.fullName.toUpperCase()}*${leaderTag}\n` +
+        `• *Phone:* ${m.phone}\n` +
+        `• *Dept:* ${m.department.toUpperCase()}${unitText}\n` +
+        `• *Role:* ${m.role || 'Member'}\n` +
+        (m.birthday ? `• *Birthday:* ${m.birthday}\n` : '') +
+        (m.attendedDLI ? `• *DLI:* ${m.attendedDLI} | *DCA:* ${m.attendedDCA || 'N/A'}\n` : '') +
+        (m.address ? `• *Address:* ${m.address}\n` : '');
+    }
+
+    message += `\n───────────────────────────\n_Type *menu* to return to the main menu._`;
+    await this.whatsappService.sendMessage(remoteJid, message);
+  }
+
+  /**
    * Action: Approve Registration Request (Admin, HOD, and Unit Heads)
    */
   async handleApproveRegistrationRequest(

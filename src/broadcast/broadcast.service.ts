@@ -1,6 +1,7 @@
 import { Injectable, Logger, Inject, forwardRef, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { WhatsappService } from '../whatsapp/whatsapp.service';
+import { TelegramService } from '../telegram/telegram.service';
 import { BroadcastGroupsService } from './broadcast-groups.service';
 import { BroadcastMediaPayload } from './dto/broadcast.dto';
 import { Worker } from '@prisma/client';
@@ -21,6 +22,8 @@ export class BroadcastService {
     private readonly broadcastGroupsService: BroadcastGroupsService,
     @Inject(forwardRef(() => WhatsappService))
     private readonly whatsappService: WhatsappService,
+    @Inject(forwardRef(() => TelegramService))
+    private readonly telegramService: TelegramService,
   ) {}
 
   /**
@@ -35,7 +38,7 @@ export class BroadcastService {
   }
 
   /**
-   * Send broadcast message or media to a list of workers with rate throttling
+   * Send broadcast message or media to a list of workers with rate throttling across WhatsApp & Telegram
    */
   private async dispatchBroadcast(
     workers: Worker[],
@@ -52,6 +55,9 @@ export class BroadcastService {
       : messageText.trim();
 
     for (const worker of workers) {
+      let isDelivered = false;
+
+      // 1. WhatsApp Delivery
       const recipientJid = this.getWorkerJid(worker);
       try {
         if (media) {
@@ -88,14 +94,35 @@ export class BroadcastService {
         } else {
           await this.whatsappService.sendMessage(recipientJid, formattedMessage);
         }
-        deliveredCount++;
+        isDelivered = true;
       } catch (err: any) {
-        this.logger.warn(`Failed to dispatch broadcast to ${worker.fullName} (${recipientJid}): ${err.message}`);
+        this.logger.warn(`WhatsApp broadcast failed for ${worker.fullName}: ${err.message}`);
+      }
+
+      // 2. Telegram Delivery (if worker has linked Telegram)
+      if (worker.telegramId) {
+        try {
+          if (media && media.type === 'image') {
+            await this.telegramService.sendPhoto(worker.telegramId, media.buffer, formattedMessage);
+          } else if (media && media.type === 'document') {
+            await this.telegramService.sendDocument(worker.telegramId, media.buffer, media.fileName, formattedMessage);
+          } else {
+            await this.telegramService.sendMessage(worker.telegramId, formattedMessage);
+          }
+          isDelivered = true;
+        } catch (err: any) {
+          this.logger.warn(`Telegram broadcast failed for ${worker.fullName}: ${err.message}`);
+        }
+      }
+
+      if (isDelivered) {
+        deliveredCount++;
+      } else {
         failedCount++;
       }
 
       // Small throttling delay to protect socket connection
-      await new Promise((resolve) => setTimeout(resolve, 250));
+      await new Promise((resolve) => setTimeout(resolve, 200));
     }
 
     return {

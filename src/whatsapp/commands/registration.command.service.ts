@@ -124,6 +124,40 @@ export class RegistrationCommandService {
         return;
       }
 
+      // Check if phone number is already registered in the workforce database
+      const targetPhone = analysis.data.phone || cleanSenderPhone;
+      if (targetPhone) {
+        const existingWorker = await this.workersService.findByPhone(targetPhone);
+        if (existingWorker) {
+          await this.whatsappService.sendMessage(
+            remoteJid,
+            `❌ *REGISTRATION REJECTED: PHONE ALREADY REGISTERED*\n` +
+            `────────────────────────────\n` +
+            `A church worker record already exists with the phone number *${targetPhone}*:\n\n` +
+            `• *Full Name:* ${existingWorker.fullName}\n` +
+            `• *Department:* ${existingWorker.department.toUpperCase()}${existingWorker.unit ? ' (' + existingWorker.unit + ')' : ''}\n` +
+            `• *Role:* ${existingWorker.role || 'Member'}\n` +
+            `• *Status:* ${existingWorker.isActive ? 'Active ✅' : 'Inactive ❌'}\n\n` +
+            `💡 *Note:* If you need to update your details or change departments, please contact your Head of Department (HOD) or Church Administrator.\n\n` +
+            `_Type *menu* to return to the main menu._`,
+          );
+          return;
+        }
+
+        const existingPending = await this.workersService.findPendingRequestByPhone(targetPhone);
+        if (existingPending) {
+          await this.whatsappService.sendMessage(
+            remoteJid,
+            `⏳ *REGISTRATION ALREADY PENDING REVIEW*\n` +
+            `────────────────────────────\n` +
+            `A registration request for *${existingPending.fullName}* (${targetPhone}) is already pending approval from the *${existingPending.department.toUpperCase()}* department leadership.\n\n` +
+            `You will receive an automated notification once it has been reviewed!\n\n` +
+            `_Type *menu* to return._`,
+          );
+          return;
+        }
+      }
+
       // Check sender identity and role
       const normalizedSender = senderPhone ? this.workersService.normalizePhoneNumber(senderPhone) : null;
       const senderWorker = await this.workersService.findByPhoneOrLid(normalizedSender, lid);

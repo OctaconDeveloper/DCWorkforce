@@ -175,24 +175,51 @@ export class WorkersService {
     return worker;
   }
 
+  /**
+   * Helper to generate Nigerian phone number variants (080..., 23480..., 80...)
+   */
+  getPhoneVariants(rawPhone: string): string[] {
+    const normalized = this.normalizePhoneNumber(rawPhone);
+    if (!normalized) return [];
+
+    const variants = new Set<string>();
+    variants.add(normalized);
+
+    if (normalized.startsWith('234') && normalized.length === 13) {
+      variants.add('0' + normalized.substring(3));
+      variants.add(normalized.substring(3));
+    } else if (normalized.startsWith('0') && normalized.length === 11) {
+      variants.add('234' + normalized.substring(1));
+      variants.add(normalized.substring(1));
+    } else if (normalized.length === 10) {
+      variants.add('0' + normalized);
+      variants.add('234' + normalized);
+    }
+
+    return Array.from(variants);
+  }
+
   async findByPhone(rawPhone: string): Promise<Worker | null> {
-    const normalizedPhone = this.normalizePhoneNumber(rawPhone);
-    if (!normalizedPhone) return null;
+    const variants = this.getPhoneVariants(rawPhone);
+    if (variants.length === 0) return null;
 
     return this.prisma.worker.findFirst({
-      where: { phone: normalizedPhone, isActive: true },
+      where: {
+        OR: variants.map((p) => ({ phone: p })),
+        isActive: true,
+      },
     });
   }
 
   async findByPhoneOrLid(rawPhone?: string | null, rawLid?: string | null): Promise<Worker | null> {
-    const normalizedPhone = rawPhone ? this.normalizePhoneNumber(rawPhone) : null;
+    const variants = rawPhone ? this.getPhoneVariants(rawPhone) : [];
     const cleanLid = rawLid?.trim() || null;
 
-    if (!normalizedPhone && !cleanLid) return null;
+    if (variants.length === 0 && !cleanLid) return null;
 
     const conditions: any[] = [];
-    if (normalizedPhone) {
-      conditions.push({ phone: normalizedPhone });
+    if (variants.length > 0) {
+      variants.forEach((p) => conditions.push({ phone: p }));
     }
     if (cleanLid) {
       conditions.push({ lid: cleanLid });
@@ -206,10 +233,31 @@ export class WorkersService {
     });
   }
 
+  async findByTelegramId(telegramId: string | number): Promise<Worker | null> {
+    if (!telegramId) return null;
+    return this.prisma.worker.findFirst({
+      where: {
+        telegramId: telegramId.toString(),
+        isActive: true,
+      },
+    });
+  }
+
   async linkLid(workerId: string, lid: string): Promise<Worker> {
     return this.prisma.worker.update({
       where: { id: workerId },
       data: { lid: lid.trim() },
+    });
+  }
+
+  async linkTelegramId(workerId: string, telegramId: string | number, username?: string): Promise<Worker> {
+    return this.prisma.worker.update({
+      where: { id: workerId },
+      data: {
+        telegramId: telegramId.toString(),
+        telegramUsername: username?.trim() || undefined,
+        lastInteractedAt: new Date(),
+      },
     });
   }
 
@@ -682,6 +730,62 @@ export class WorkersService {
   }
 
   /**
+   * Search members for Admin, HOD, or Unit Head with scope boundaries
+   */
+  async searchMembersForLeader(
+    searchTerm: string,
+    leader: Worker | null,
+    isAdmin = false,
+  ): Promise<Worker[]> {
+    const cleanTerm = searchTerm.trim().toLowerCase();
+    if (!cleanTerm) return [];
+
+    const normalizedPhone = this.normalizePhoneNumber(cleanTerm);
+    const phoneVariants = this.getPhoneVariants(cleanTerm);
+
+    const baseWhere: any = { isActive: true };
+    if (!isAdmin && leader) {
+      baseWhere.department = this.normalizeDepartment(leader.department);
+      if (leader.isUnitHead && !leader.isHOD && leader.unit) {
+        baseWhere.unit = leader.unit;
+      }
+    }
+
+    const allScopedWorkers = await this.prisma.worker.findMany({
+      where: baseWhere,
+      orderBy: [{ department: 'asc' }, { isHOD: 'desc' }, { isUnitHead: 'desc' }, { fullName: 'asc' }],
+    });
+
+    // Case-insensitive multi-field search
+    const filtered = allScopedWorkers.filter((w) => {
+      const nameMatch = w.fullName ? w.fullName.toLowerCase().includes(cleanTerm) : false;
+      const roleMatch = w.role ? w.role.toLowerCase().includes(cleanTerm) : false;
+      const unitMatch = w.unit ? w.unit.toLowerCase().includes(cleanTerm) : false;
+      const deptMatch = w.department ? w.department.toLowerCase().includes(cleanTerm) : false;
+      const addressMatch = w.address ? w.address.toLowerCase().includes(cleanTerm) : false;
+      const emailMatch = w.email ? w.email.toLowerCase().includes(cleanTerm) : false;
+      const birthdayMatch = w.birthday ? w.birthday.toLowerCase().includes(cleanTerm) : false;
+      const phoneMatch =
+        (w.phone && w.phone.toLowerCase().includes(cleanTerm)) ||
+        (normalizedPhone && w.phone && w.phone.includes(normalizedPhone)) ||
+        phoneVariants.some((pv) => w.phone && w.phone.includes(pv));
+
+      return Boolean(
+        nameMatch ||
+        roleMatch ||
+        unitMatch ||
+        deptMatch ||
+        addressMatch ||
+        emailMatch ||
+        birthdayMatch ||
+        phoneMatch,
+      );
+    });
+
+    return filtered.slice(0, 25);
+  }
+
+  /**
    * Find a registration request by ID (supports partial/short prefix search)
    */
   async findPendingRequestById(id: string): Promise<RegistrationRequest | null> {
@@ -692,6 +796,21 @@ export class WorkersService {
           { id: cleanId },
           { id: { startsWith: cleanId } },
         ],
+      },
+    });
+  }
+
+  /**
+   * Find a pending registration request by phone number
+   */
+  async findPendingRequestByPhone(rawPhone: string): Promise<RegistrationRequest | null> {
+    const variants = this.getPhoneVariants(rawPhone);
+    if (variants.length === 0) return null;
+
+    return this.prisma.registrationRequest.findFirst({
+      where: {
+        OR: variants.map((p) => ({ phone: p })),
+        status: 'PENDING',
       },
     });
   }
@@ -1398,17 +1517,14 @@ export class WorkersService {
     if (!clean) return { worker: null, pendingRequest: null };
 
     // 1. Try phone normalization if it contains digits
-    const normalizedPhone = this.normalizePhoneNumber(clean);
+    const phoneVariants = this.getPhoneVariants(clean);
     const isEmail = clean.includes('@') && clean.includes('.');
     const cleanEmail = clean.toLowerCase();
 
     // 2. Query Worker table
     const workerConditions: any[] = [];
-    if (normalizedPhone && normalizedPhone.length >= 7) {
-      workerConditions.push({ phone: normalizedPhone });
-      if (normalizedPhone.startsWith('234') && normalizedPhone.length === 13) {
-        workerConditions.push({ phone: '0' + normalizedPhone.substring(3) });
-      }
+    if (phoneVariants.length > 0) {
+      phoneVariants.forEach((p) => workerConditions.push({ phone: p }));
     }
     if (isEmail) {
       workerConditions.push({ email: cleanEmail });
@@ -1428,15 +1544,10 @@ export class WorkersService {
     }
 
     // 3. Fallback: check pending RegistrationRequest
-    if (normalizedPhone && normalizedPhone.length >= 7) {
+    if (phoneVariants.length > 0) {
       const pending = await this.prisma.registrationRequest.findFirst({
         where: {
-          OR: [
-            { phone: normalizedPhone },
-            ...(normalizedPhone.startsWith('234')
-              ? [{ phone: '0' + normalizedPhone.substring(3) }]
-              : []),
-          ],
+          OR: phoneVariants.map((p) => ({ phone: p })),
           status: 'PENDING',
         },
         orderBy: { createdAt: 'desc' },

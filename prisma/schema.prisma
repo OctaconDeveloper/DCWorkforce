@@ -41,6 +41,8 @@ model Worker {
   attendedEncounter String?  // yes / no
   address           String?  // Full Address
   lid               String?  @unique // WhatsApp Linked Device ID (LID) for modern WhatsApp multi-device
+  telegramId        String?  @unique // Telegram Chat/User ID for Telegram Bot
+  telegramUsername  String?  // Telegram @username
   isActive          Boolean   @default(true)
   isHOD             Boolean   @default(false)
   isUnitHead        Boolean   @default(false)
@@ -53,6 +55,7 @@ model Worker {
   @@index([department])
   @@index([isActive])
   @@index([lid])
+  @@index([telegramId])
   @@map("workers")
 }
 
@@ -83,6 +86,7 @@ model RegistrationRequest {
   attendedEncounter String?
   address           String?
   lid               String?
+  telegramId        String?
   status            String   @default("PENDING") // PENDING, ACCEPTED, REJECTED
   reviewedBy        String?
   reviewNote        String?

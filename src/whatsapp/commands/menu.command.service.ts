@@ -61,18 +61,16 @@ export class MenuCommandService {
       `────────────────────────────\n` +
       `Hello! You are browsing as a guest/member${phoneDisplay}.\n\n` +
       `📌 *CHOOSE AN OPTION:*\n\n` +
-      `1️⃣ *🚀 Complete Onboarding / Link Profile*\n` +
-      `   _Already registered or changed device? Reply *onboard* (or *onboard <phone>*) to link your profile!_\n\n` +
-      `2️⃣ *📝 Join Workforce / Register*\n` +
-      `   _New to workforce? Reply *register* to receive the worker registration form_\n\n` +
-      `3️⃣ *🏛️ Church Departments*\n` +
+      `1️⃣ *📝 Join Workforce / Register*\n` +
+      `   _New to workforce? Reply *1* or *register* to receive the worker registration form_\n\n` +
+      `2️⃣ *🏛️ Church Departments*\n` +
       `   _Departments, units & leadership info_\n\n` +
-      `4️⃣ *💳 Giving & Projects*\n` +
+      `3️⃣ *💳 Giving & Projects*\n` +
       `   _Tithe & offering bank accounts, donation drives_\n\n` +
-      `5️⃣ *🎨 Gallery & Media Library*\n` +
+      `4️⃣ *🎨 Gallery & Media Library*\n` +
       `   _Audio sermons, study PDFs & media highlights_\n\n` +
       `────────────────────────────\n` +
-      `💡 *Quick Start:* Type *onboard* to link your profile or *register* to join!`;
+      `💡 *Quick Start:* Type *1* or *register* to get the registration form!`;
 
     await this.whatsappService.sendMessage(remoteJid, menuBody);
   }
@@ -83,9 +81,8 @@ export class MenuCommandService {
   async sendProfileSubMenu(worker: Worker | null, remoteJid: string, isAdmin = false) {
     if (!worker && !isAdmin) {
       const text =
-        `👤 *WORKER ONBOARDING & REGISTRATION*\n` +
+        `👤 *WORKER REGISTRATION & STATUS*\n` +
         `────────────────────────────\n` +
-        `• Type *onboard* or *onboard <phone>* — Link profile if previously registered / changed device\n` +
         `• Type *register* or *template* — Receive the blank worker registration form\n` +
         `• Type *status* or *info* — Check your worker registration status\n\n` +
         `↩️ Type *menu* to return to the main menu.`;
@@ -183,9 +180,10 @@ export class MenuCommandService {
       `• Type *my announcements* — View & delete your announcements\n` +
       `• Type *add event* — Create an upcoming event (with template)\n` +
       `• Type *my events* — View & delete your events\n\n` +
-      `👥 *MEMBERS & APPROVALS:*\n` +
-      `• Type *pending* — View pending registrations with quick approve buttons\n` +
+      `👥 *MEMBERS, SEARCH & APPROVALS:*\n` +
+      `• \`search <name/phone/unit>\` — Search workforce members\n` +
       `• Type *members* — View registered workers in your department/unit\n` +
+      `• Type *pending* — View pending registrations with quick approve buttons\n` +
       `• Type *accept <#>* or *reject <#>* — Quick approve/reject (e.g. *accept 1*)\n`;
 
     if (isAdmin || (worker && worker.isHOD)) {
@@ -228,8 +226,8 @@ export class MenuCommandService {
         `📁 *3. 💳 GIVING & ACCOUNTS*\n` +
         `• *offering* — Tithe, offering & donation bank accounts\n` +
         `• *donations* — Active church projects & donation drives\n\n` +
-        `📁 *5. 🎨 GALLERY & RESOURCES*\n` +
-        `• *gallery* (or *5*) — Audio sermons, study PDFs & media\n\n` +
+        `📁 *4. 🎨 GALLERY & RESOURCES*\n` +
+        `• *gallery* (or *4*) — Audio sermons, study PDFs & media\n\n` +
         `────────────────────────────\n` +
         `💡 Type *menu* anytime to access the main menu!`;
 
@@ -268,6 +266,7 @@ export class MenuCommandService {
     if (isLeader) {
       helpText +=
         `\n📁 *4. 👑 LEADERSHIP, BROADCASTS & APPROVALS*\n` +
+        `• \`search <name/phone/unit>\` — Search workforce directory\n` +
         (worker?.isUnitHead || isAdmin ? `• \`broadcast unit <msg>\` — Broadcast to your unit\n` : '') +
         (worker?.isHOD || isAdmin ? `• \`broadcast dept <msg>\` — Broadcast to your department\n` : '') +
         (isAdmin ? `• \`broadcast all <msg>\` — Church-wide broadcast\n• \`broadcast group <name> <msg>\` — Group broadcast\n• *groups* — Manage custom broadcast lists\n` : '') +
