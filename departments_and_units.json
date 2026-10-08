@@ -1,0 +1,527 @@
+{
+  "organization": "Dominion City Kubwa",
+  "motto": "raising leaders that transform society",
+  "directorates": [
+    {
+      "directorate": "Programs Directorate",
+      "director": "Pastor Ogar Obaji",
+      "departments": [
+        {
+          "name": "Defence",
+          "hod": "Patrick Essien",
+          "units": [
+            {
+              "name": "Parking",
+              "hou": ["Dr Emeka Asogwa"]
+            },
+            {
+              "name": "Protocol",
+              "hou": ["Dr Emeka Asogwa"]
+            },
+            {
+              "name": "Security",
+              "hou": ["Vivian Iwuchukwu"]
+            }
+          ]
+        },
+        {
+          "name": "Facility",
+          "hod": "Prince Uchenna / Dominic Omale",
+          "units": [
+            {
+              "name": "Facility Management & Maintenance",
+              "hou": []
+            }
+          ]
+        },
+        {
+          "name": "Media",
+          "hod": "Dr. David Araka",
+          "units": [
+            {
+              "name": "Design, Branding & Content Creation",
+              "hou": ["Ilesanmi Odunayo Racheal", "Catherine Efena"]
+            },
+            {
+              "name": "IT / Livestream & Broadcast",
+              "hou": ["Pst. David Ajudua", "Jil Harrys"]
+            },
+            {
+              "name": "Light & Sound",
+              "hou": ["Paul Okorie", "Victor Opara"]
+            },
+            {
+              "name": "Multimedia & Digital Evangelism",
+              "hou": ["Jessica Orji"]
+            },
+            {
+              "name": "Photography & Videography",
+              "hou": ["Remi Chibueze Daji"]
+            }
+          ]
+        },
+        {
+          "name": "Quality Assurance",
+          "hod": "Pastor Collins Nwogbo",
+          "units": [
+            {
+              "name": "Health & Safety",
+              "hou": ["Dr James Okorie"]
+            }
+          ]
+        },
+        {
+          "name": "Service",
+          "hod": "Pastor Emmanuel Essien / Queen Isaac",
+          "units": [
+            {
+              "name": "Greeters",
+              "hou": []
+            },
+            {
+              "name": "Sanctuary",
+              "hou": ["Queen Isaac"]
+            },
+            {
+              "name": "Ushering",
+              "hou": ["Christian Okonkwo", "Blessed Emmanuel"]
+            }
+          ]
+        },
+        {
+          "name": "Worship",
+          "hod": "Pastor Praise Israel T.",
+          "units": [
+            {
+              "name": "Choir",
+              "hou": ["Pastor Mary Nathan"]
+            },
+            {
+              "name": "Drama Unit",
+              "hou": ["Mrs Helen Anyaegbunam"]
+            },
+            {
+              "name": "Musicians",
+              "hou": ["Pastor Paul Marshal"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "directorate": "Discipleship Directorate",
+      "director": "Dr Arinze Okoli",
+      "departments": [
+        {
+          "name": "DCA / DLI",
+          "hod": "Dr Arinze Okoli",
+          "units": [
+            {
+              "name": "Dominion City Academy (DCA)",
+              "hou": ["Dr Arinze Okoli"]
+            },
+            {
+              "name": "Dominion Leadership Institute (DLI)",
+              "hou": ["Dr Arinze Okoli"]
+            }
+          ]
+        },
+        {
+          "name": "Discipleship Resource",
+          "hod": "Ifunaya Nwachi",
+          "units": [
+            {
+              "name": "Discipleship Resource & Materials",
+              "hou": ["Ifunaya Nwachi"]
+            }
+          ]
+        },
+        {
+          "name": "Encounter Retreat",
+          "hod": "Pst. Mary Emenike / Pst. Geoffrey Ibe",
+          "units": [
+            {
+              "name": "Encounter Retreat Operations",
+              "hou": ["Pst. Mary Emenike", "Pst. Geoffrey Ibe"]
+            }
+          ]
+        },
+        {
+          "name": "School of Ministry (SOD)",
+          "hod": "Pastor Faith Aiyegbe",
+          "units": [
+            {
+              "name": "School of Ministry Operations",
+              "hou": ["Pastor Faith Aiyegbe"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "directorate": "Ministry Directorate",
+      "director": "Pastor Chris Bassey",
+      "assistantDirector": "Pastor Helen Udochukwu",
+      "departments": [
+        {
+          "name": "Intercessory",
+          "hod": "Pastor Helen Udochukwu",
+          "units": [
+            {
+              "name": "Intercessory Prayer",
+              "hou": ["Pastor Helen Udochukwu"]
+            }
+          ]
+        },
+        {
+          "name": "Special Ministries",
+          "hod": "Pastor Chris Bassey",
+          "units": [
+            {
+              "name": "Authentic Men",
+              "hou": ["Mr. Akintunde Bayo"]
+            },
+            {
+              "name": "Awaiting Mothers",
+              "hou": ["Mrs Juliet Ibeh"]
+            },
+            {
+              "name": "Corpers Fellowship",
+              "hou": ["Pastor Samuel Wilfred"]
+            },
+            {
+              "name": "Counseling",
+              "hou": ["Mrs Domie Asogwa"]
+            },
+            {
+              "name": "Couple’s Classic",
+              "hou": ["Pst. Chris Bassey"]
+            },
+            {
+              "name": "DC Citizens",
+              "hou": ["Pastor Jecil Udezue"]
+            },
+            {
+              "name": "DC Generals",
+              "hou": []
+            },
+            {
+              "name": "DC Prime",
+              "hou": ["Pastor Dozie Nwafor"]
+            },
+            {
+              "name": "Enterprise Hub",
+              "hou": ["Pst. Kene Ezike"]
+            },
+            {
+              "name": "Hospitality",
+              "hou": ["Mrs Amara Akintunde"]
+            },
+            {
+              "name": "King’s Kids",
+              "hou": ["Mrs Juliet Ibeh"]
+            },
+            {
+              "name": "Medical",
+              "hou": ["Dr Chioma Agbo"]
+            },
+            {
+              "name": "New Eve",
+              "hou": ["Pastor Funmi Ihua"]
+            },
+            {
+              "name": "Sports",
+              "hou": ["Mr Endurance Bongo"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "directorate": "Missions Directorate",
+      "director": "Pastor Jackson Ufon-Abasi",
+      "departments": [
+        {
+          "name": "Evangelism & Mobilization",
+          "hod": "Pastor Jackson Ufon-Abasi",
+          "units": [
+            {
+              "name": "Golden Heart (Welfare)",
+              "hou": ["Mrs H. Ochulor", "Angela Nworah"]
+            },
+            {
+              "name": "Healing Stripes",
+              "hou": ["Pst. F. Aiyegbe", "Pst. P. Israel", "Pst. E. Ezike"]
+            },
+            {
+              "name": "Prison",
+              "hou": ["Henry Gabriel"]
+            },
+            {
+              "name": "Shelter",
+              "hou": ["Queen Isaac"]
+            }
+          ]
+        },
+        {
+          "name": "External Mobilization",
+          "hod": "Pastor Jackson Ufon-Abasi",
+          "units": [
+            {
+              "name": "Southwest Region Coordination",
+              "hou": []
+            }
+          ]
+        },
+        {
+          "name": "Outreach",
+          "hod": "Pastor Ebuka Ezike",
+          "units": [
+            {
+              "name": "Follow Up",
+              "hou": ["Miss Chioma Nnamani"]
+            },
+            {
+              "name": "Service Mobilization",
+              "hou": ["Pst. H. Gabriel", "Pst. K. Nwachukwu"]
+            },
+            {
+              "name": "Soul Winning",
+              "hou": ["Pastor Ogar Obaji"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "directorate": "Membership Directorate",
+      "director": "Pastor Kenechukwu Ezike",
+      "departments": [
+        {
+          "name": "Cell Management",
+          "hod": "Pastor Reuben Imarha",
+          "units": [
+            {
+              "name": "Cell Groups & Discipleship Support",
+              "hou": ["Pastor Reuben Imarha"]
+            }
+          ]
+        },
+        {
+          "name": "Consolidation",
+          "hod": "Pastor Kenechukwu Ezike",
+          "units": [
+            {
+              "name": "Call Center",
+              "hou": ["Pst. Immaculatata Chijioke"]
+            },
+            {
+              "name": "Database",
+              "hou": ["Pst. W. Onyebuchi", "Grace A. Godwin"]
+            },
+            {
+              "name": "M.V.P.",
+              "hou": ["Pst. Geoffrey Ibe"]
+            }
+          ]
+        },
+        {
+          "name": "Membership Care",
+          "hod": "Chijioke Praise",
+          "units": [
+            {
+              "name": "Celebration & Ceremony",
+              "hou": ["Pst. E. Ajudua", "Pst. L. Imarha"]
+            },
+            {
+              "name": "Experience Centre",
+              "hou": ["Blessed Emmanuel"]
+            },
+            {
+              "name": "Konnect Hub",
+              "hou": ["Deborah"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "directorate": "Workforce Directorate",
+      "director": "Pastor Mary Emelike / David Ajudua",
+      "departments": [
+        {
+          "name": "Workforce Operations",
+          "hod": "Pastor Mary Emelike / David Ajudua",
+          "units": [
+            {
+              "name": "Attendance",
+              "hou": ["Pastor Samuel Wilfred", "Mrs Ernestina"]
+            },
+            {
+              "name": "Care",
+              "hou": ["Angela Nworah"]
+            },
+            {
+              "name": "Celebration",
+              "hou": ["Pastor Jackson Ufon-Abasi", "Oma Araka"]
+            },
+            {
+              "name": "Database",
+              "hou": ["Pastor Wise Onyebuchi", "Mrs. Grace Godwin"]
+            },
+            {
+              "name": "Learning & Performance",
+              "hou": ["Faith Aiyegbe"]
+            },
+            {
+              "name": "Recruitment",
+              "hou": ["Love Ogar", "Dumebi Essien"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "directorate": "Administration & Support",
+      "director": "Resident Pastors",
+      "departments": [
+        {
+          "name": "Administration",
+          "hod": "Pastor Faith Aiyegbe",
+          "units": [
+            {
+              "name": "General Church Administration",
+              "hou": ["Pastor Faith Aiyegbe"]
+            }
+          ]
+        },
+        {
+          "name": "Finance",
+          "hod": "Pastor Emmanuel Essien",
+          "units": [
+            {
+              "name": "Church Finance & Accounting",
+              "hou": ["Pastor Emmanuel Essien"]
+            }
+          ]
+        },
+        {
+          "name": "Legal & Compliance",
+          "hod": "Pastor Reuben Imarha",
+          "units": [
+            {
+              "name": "Legal & Regulatory Compliance",
+              "hou": ["Pastor Reuben Imarha"]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "departments_summary": {
+    "Administration": [
+      "General Church Administration"
+    ],
+    "Cell Management": [
+      "Cell Groups & Discipleship Support"
+    ],
+    "Consolidation": [
+      "Call Center",
+      "Database",
+      "M.V.P."
+    ],
+    "DCA / DLI": [
+      "Dominion City Academy (DCA)",
+      "Dominion Leadership Institute (DLI)"
+    ],
+    "Defence": [
+      "Parking",
+      "Protocol",
+      "Security"
+    ],
+    "Discipleship Resource": [
+      "Discipleship Resource & Materials"
+    ],
+    "Encounter Retreat": [
+      "Encounter Retreat Operations"
+    ],
+    "Evangelism & Mobilization": [
+      "Golden Heart (Welfare)",
+      "Healing Stripes",
+      "Prison",
+      "Shelter"
+    ],
+    "External Mobilization": [
+      "Southwest Region Coordination"
+    ],
+    "Facility": [
+      "Facility Management & Maintenance"
+    ],
+    "Finance": [
+      "Church Finance & Accounting"
+    ],
+    "Intercessory": [
+      "Intercessory Prayer"
+    ],
+    "Legal & Compliance": [
+      "Legal & Regulatory Compliance"
+    ],
+    "Media": [
+      "Design, Branding & Content Creation",
+      "IT / Livestream & Broadcast",
+      "Light & Sound",
+      "Multimedia & Digital Evangelism",
+      "Photography & Videography"
+    ],
+    "Membership Care": [
+      "Celebration & Ceremony",
+      "Experience Centre",
+      "Konnect Hub"
+    ],
+    "Outreach": [
+      "Follow Up",
+      "Service Mobilization",
+      "Soul Winning"
+    ],
+    "Quality Assurance": [
+      "Health & Safety"
+    ],
+    "School of Ministry (SOD)": [
+      "School of Ministry Operations"
+    ],
+    "Service": [
+      "Greeters",
+      "Sanctuary",
+      "Ushering"
+    ],
+    "Special Ministries": [
+      "Authentic Men",
+      "Awaiting Mothers",
+      "Corpers Fellowship",
+      "Counseling",
+      "Couple’s Classic",
+      "DC Citizens",
+      "DC Generals",
+      "DC Prime",
+      "Enterprise Hub",
+      "Hospitality",
+      "King’s Kids",
+      "Medical",
+      "New Eve",
+      "Sports"
+    ],
+    "Workforce Operations": [
+      "Attendance",
+      "Care",
+      "Celebration",
+      "Database",
+      "Learning & Performance",
+      "Recruitment"
+    ],
+    "Worship": [
+      "Choir",
+      "Drama Unit",
+      "Musicians"
+    ]
+  }
+}

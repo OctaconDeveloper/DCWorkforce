@@ -1,0 +1,12 @@
+import { Module, forwardRef } from '@nestjs/common';
+import { BroadcastService } from './broadcast.service';
+import { BroadcastGroupsService } from './broadcast-groups.service';
+import { PrismaModule } from '../prisma/prisma.module';
+import { WhatsappModule } from '../whatsapp/whatsapp.module';
+
+@Module({
+  imports: [PrismaModule, forwardRef(() => WhatsappModule)],
+  providers: [BroadcastService, BroadcastGroupsService],
+  exports: [BroadcastService, BroadcastGroupsService],
+})
+export class BroadcastModule {}

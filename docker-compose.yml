@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: church_backend
+    restart: unless-stopped
+    environment:
+      PORT: 3000
+      DATABASE_URL: "file:./dev.db"
+      JWT_SECRET: church_workers_management_secret_key_2026
+      ADMIN_EMAIL: admin@church.com
+      ADMIN_PASSWORD: admin123
+      ADMIN_PHONE_NUMBERS: 2348012345678
+      AUTH_FOLDER_PATH: /app/auth_info_baileys
+    ports:
+      - "3000:3000"
+    volumes:
+      - sqlite_data:/app/prisma
+      - baileys_auth:/app/auth_info_baileys
+
+  # Optional: Uncomment if switching to PostgreSQL
+  # postgres:
+  #   image: postgres:15-alpine
+  #   container_name: church_postgres
+  #   restart: unless-stopped
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #     POSTGRES_DB: church_workers_db
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  sqlite_data:
+  baileys_auth:
+  # postgres_data:

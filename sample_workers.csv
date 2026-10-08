@@ -1,0 +1,10 @@
+fullName,phone,department,role,email,birthday,joinedDate,isHOD
+Sister Grace Adebayo,2348011223344,choir,HOD,grace@church.com,1992-05-14,2019-01-10,true
+Brother David Okafor,2348022334455,choir,Tenor Lead,david@church.com,1995-10-22,2021-04-15,false
+Sister Mary John,2348033445566,ushering,HOD,mary@church.com,1988-12-05,2018-09-01,true
+Brother Emmanuel Chukwu,2348044556677,media,Sound Engineer,emmanuel@church.com,1996-03-18,2020-02-11,false
+Sister Peace Samuel,2348055667788,media,HOD,peace@church.com,1991-07-29,2019-06-20,true
+Brother Paul Kingsley,2348066778899,protocol,HOD,paul@church.com,1989-11-12,2017-08-14,true
+Sister Blessing Daniel,2348077889900,prayer,HOD,blessing@church.com,1985-04-03,2016-03-10,true
+Brother Joshua Adeleke,2348088990011,welfare,HOD,joshua@church.com,1990-09-25,2020-11-05,true
+Sister Ruth Michael,2348099001122,children,HOD,ruth@church.com,1993-01-30,2021-08-19,true
