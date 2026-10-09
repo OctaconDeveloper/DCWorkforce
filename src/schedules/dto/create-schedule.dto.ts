@@ -8,9 +8,9 @@ export class CreateScheduleDto {
     example: Department.CHOIR,
     description: 'Department assigned to this schedule',
   })
-  @IsEnum(Department)
+  @IsString()
   @IsNotEmpty()
-  department: Department;
+  department: string;
 
   @ApiProperty({ example: 'Sunday Choir Rehearsal & Sound Check' })
   @IsString()
@@ -37,18 +37,49 @@ export class CreateScheduleDto {
   @IsString()
   @IsOptional()
   description?: string;
+
+  @ApiPropertyOptional({ example: 'DEPARTMENT', description: 'DEPARTMENT, UNIT, WORKER, or ALL' })
+  @IsString()
+  @IsOptional()
+  targetScope?: string;
+
+  @ApiPropertyOptional({ example: 'IT / Livestream & Broadcast' })
+  @IsString()
+  @IsOptional()
+  targetUnit?: string;
+
+  @ApiPropertyOptional({ example: '08101889830, 08144527833' })
+  @IsString()
+  @IsOptional()
+  targetWorkers?: string;
+
+  @ApiPropertyOptional({ example: 'Dr. David Araka' })
+  @IsString()
+  @IsOptional()
+  createdBy?: string;
+
+  @ApiPropertyOptional({ example: 'HOD' })
+  @IsString()
+  @IsOptional()
+  creatorRole?: string;
 }
 
 export class UpdateScheduleDto extends PartialType(CreateScheduleDto) {}
 
 export class QueryScheduleDto {
-  @ApiPropertyOptional({ enum: Department })
-  @IsEnum(Department)
+  @ApiPropertyOptional({ description: 'Department name' })
+  @IsString()
   @IsOptional()
-  department?: Department;
+  department?: string;
+
+  @ApiPropertyOptional({ example: 'IT / Livestream & Broadcast' })
+  @IsString()
+  @IsOptional()
+  unit?: string;
 
   @ApiPropertyOptional({ example: '2026-10-01', description: 'Filter schedules from this date' })
   @IsString()
   @IsOptional()
   fromDate?: string;
 }
+

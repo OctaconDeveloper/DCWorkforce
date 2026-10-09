@@ -143,8 +143,16 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
       await this.handleAnnouncements(ctx);
     });
 
-    this.bot.command(['schedule', 'duty', 'roster'], async (ctx) => {
+    this.bot.command(['schedule', 'duty', 'roster', 'schedules'], async (ctx) => {
       await this.handleSchedule(ctx);
+    });
+
+    this.bot.command(['schedule_template', 'duty_template'], async (ctx) => {
+      await this.handleScheduleTemplate(ctx);
+    });
+
+    this.bot.command(['manage_schedules', 'manage_duty'], async (ctx) => {
+      await this.handleManageSchedules(ctx);
     });
 
     this.bot.command(['giving', 'offering', 'tithe', 'donations', 'projects'], async (ctx) => {
@@ -599,18 +607,102 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
       return;
     }
 
-    const schedules = await this.schedulesService.findAll({ department: worker.department as any });
+    const schedules = await this.schedulesService.findUpcomingForWorker(worker, 10);
     if (schedules.length === 0) {
       await this.replySafe(
         ctx,
-        `🗓️ *DUTY SCHEDULE — ${worker.department.toUpperCase()}*\n────────────────────────────\nNo active duty rosters found for your department.\n\nType /menu to return.`,
+        `🗓️ *DUTY SCHEDULE — ${worker.department.toUpperCase()}*\n────────────────────────────\nNo active duty rosters found for your department or unit.\n\nType /menu to return.`,
       );
       return;
     }
 
-    let text = `🗓️ *DUTY SCHEDULE — ${worker.department.toUpperCase()}*\n────────────────────────────\n`;
-    schedules.forEach((s) => {
-      text += `📌 *${s.title}*\n• Date: ${s.date}\n• Time: ${s.time}\n\n`;
+    let text = `🗓️ *YOUR UPCOMING DUTY ROSTER (${worker.department.toUpperCase()})*\n────────────────────────────\n\n`;
+    schedules.forEach((s, idx) => {
+      let scopeTag = 'Department Duty';
+      if (s.targetScope === 'ALL') {
+        scopeTag = 'Church-Wide';
+      } else if (s.targetScope === 'UNIT') {
+        scopeTag = `Unit Duty: ${s.targetUnit || 'Unit'}`;
+      } else if (s.targetScope === 'WORKER') {
+        scopeTag = 'Personal Assignment';
+      }
+
+      text += `*${idx + 1}. ${s.title}*\n`;
+      text += `🗓️ Date: *${s.date}* | ⏰ Time: *${s.time}*\n`;
+      text += `📍 Venue: *${s.venue}*\n`;
+      text += `🎯 Scope: *${scopeTag}*\n`;
+      if (s.description) {
+        text += `📝 Details: ${s.description}\n`;
+      }
+      text += `\n`;
+    });
+
+    text += `────────────────────────────\n_Type /menu to return._`;
+    await this.replySafe(ctx, text);
+  }
+
+  private async handleScheduleTemplate(ctx: Context) {
+    const { worker, isAdmin } = await this.resolveUser(ctx);
+    const isLeader = Boolean(isAdmin || (worker && (worker.isHOD || worker.isUnitHead)));
+
+    if (!isLeader) {
+      await this.replySafe(
+        ctx,
+        `🔒 *Leadership Access Only:* Only Head of Units, Head of Departments, and Administrators can create duty schedules.`,
+      );
+      return;
+    }
+
+    const sampleDate = new Date(Date.now() + 3 * 86400000).toISOString().split('T')[0];
+    const dept = worker?.department || 'media';
+    const unit = worker?.unit || 'Media Operations';
+
+    const text =
+      `📋 *DUTY SCHEDULE CREATION TEMPLATE*\n` +
+      `────────────────────────────\n` +
+      `Copy, fill, and send this template over WhatsApp or bot chat to publish a schedule:\n\n` +
+      `Title: Sunday 1st Service Duty Roster\n` +
+      `Date: ${sampleDate}\n` +
+      `Time: 07:00 AM\n` +
+      `Venue: Main Sanctuary\n` +
+      `Department: ${dept}\n` +
+      `Unit: ${unit}\n` +
+      `Scope: unit\n` +
+      `Workers: 08101889830\n` +
+      `Description: Video switcher, camera operations, and stream monitoring.\n\n` +
+      `────────────────────────────\n` +
+      `💡 *Reminders are automated:* Assigned workers receive reminders *2 days before* and *1 day before* duty!`;
+
+    await this.replySafe(ctx, text);
+  }
+
+  private async handleManageSchedules(ctx: Context) {
+    const { worker, isAdmin } = await this.resolveUser(ctx);
+    const isLeader = Boolean(isAdmin || (worker && (worker.isHOD || worker.isUnitHead)));
+
+    if (!isLeader) {
+      await this.replySafe(
+        ctx,
+        `🔒 *Leadership Access Only:* Only Head of Units, Head of Departments, and Administrators can manage duty schedules.`,
+      );
+      return;
+    }
+
+    const schedules = await this.schedulesService.findManagedSchedules(worker, isAdmin, 20);
+    if (!schedules || schedules.length === 0) {
+      await this.replySafe(
+        ctx,
+        `📋 *MANAGED DUTY SCHEDULES*\n────────────────────────────\nNo upcoming duty rosters currently managed.\n\nType /schedule_template to create a roster.`,
+      );
+      return;
+    }
+
+    let text = `📋 *MANAGED DUTY SCHEDULES*\n────────────────────────────\n\n`;
+    schedules.forEach((sch, idx) => {
+      text += `*${idx + 1}. ${sch.title}*\n`;
+      text += `🗓️ Date: *${sch.date}* | ⏰ Time: *${sch.time}*\n`;
+      text += `📍 Venue: *${sch.venue}*\n`;
+      text += `🎯 Scope: *${sch.targetScope}* (${sch.department.toUpperCase()}${sch.targetUnit ? ` — ${sch.targetUnit}` : ''})\n\n`;
     });
 
     await this.replySafe(ctx, text);
@@ -785,6 +877,7 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
     let body = parts.slice(1).join(' ').trim();
 
     let res;
+    await ctx.replyWithMarkdown(`⏳ *Dispatching broadcast with safe 3-5s delivery pacing...*`);
     if (target === 'unit' && (worker?.isUnitHead || isAdmin)) {
       if (!worker?.unit && !isAdmin) {
         await ctx.replyWithMarkdown(`❌ You do not have a unit assigned.`);
@@ -803,6 +896,7 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
       await ctx.replyWithMarkdown(`❌ Invalid broadcast scope or unauthorized.`);
       return;
     }
+
 
     await ctx.replyWithMarkdown(
       `✅ *Broadcast Dispatched Successfully!*\n` +

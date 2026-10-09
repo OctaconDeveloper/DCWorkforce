@@ -132,6 +132,10 @@ export class BirthdayNotifierService implements OnModuleInit, OnModuleDestroy {
     for (const member of deptWorkers) {
       const normalizedMemberPhone = this.workersService.normalizePhoneNumber(member.phone);
       if (normalizedMemberPhone !== normalizedCelebrantPhone) {
+        // Safe 3-5 seconds anti-ban delay
+        const delay = Math.floor(Math.random() * (5000 - 3000 + 1)) + 3000;
+        await new Promise((resolve) => setTimeout(resolve, delay));
+
         const memberJid = member.lid || `${normalizedMemberPhone}@s.whatsapp.net`;
         await this.whatsappService.sendMessage(memberJid, departmentAlert);
         notifiedRecipients.push(`${member.fullName} (${member.phone})`);
@@ -170,9 +174,14 @@ export class BirthdayNotifierService implements OnModuleInit, OnModuleDestroy {
     for (const member of deptWorkers) {
       const normalizedMemberPhone = this.workersService.normalizePhoneNumber(member.phone);
       if (normalizedMemberPhone !== normalizedCelebrantPhone) {
+        // Safe 3-5 seconds anti-ban delay
+        const delay = Math.floor(Math.random() * (5000 - 3000 + 1)) + 3000;
+        await new Promise((resolve) => setTimeout(resolve, delay));
+
         const memberJid = member.lid || `${normalizedMemberPhone}@s.whatsapp.net`;
         await this.whatsappService.sendMessage(memberJid, reminderMsg);
       }
     }
   }
+
 }

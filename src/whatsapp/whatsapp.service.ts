@@ -24,6 +24,9 @@ import * as path from 'path';
 import pino from 'pino';
 import { WorkersService } from '../workers/workers.service';
 import { BirthdayNotifierService } from './birthday-notifier.service';
+import { DatabaseBackupService } from './database-backup.service';
+import { ScheduleNotifierService } from '../schedules/schedule-notifier.service';
+import { WhatsAppQueueService, MessagePriority } from './whatsapp-queue.service';
 import { Worker } from '@prisma/client';
 import {
   MenuCommandService,
@@ -57,8 +60,13 @@ export class WhatsappService implements OnModuleInit, OnModuleDestroy {
   constructor(
     private readonly configService: ConfigService,
     private readonly workersService: WorkersService,
+    private readonly queueService: WhatsAppQueueService,
     @Inject(forwardRef(() => BirthdayNotifierService))
     private readonly birthdayNotifierService: BirthdayNotifierService,
+    @Inject(forwardRef(() => DatabaseBackupService))
+    private readonly databaseBackupService: DatabaseBackupService,
+    @Inject(forwardRef(() => ScheduleNotifierService))
+    private readonly scheduleNotifierService: ScheduleNotifierService,
     private readonly menuCommandService: MenuCommandService,
     private readonly infoCommandService: InfoCommandService,
     private readonly departmentsCommandService: DepartmentsCommandService,
@@ -74,7 +82,9 @@ export class WhatsappService implements OnModuleInit, OnModuleDestroy {
     private readonly broadcastCommandService: BroadcastCommandService,
     private readonly galleryCommandService: GalleryCommandService,
     private readonly onboardingCommandService: OnboardingCommandService,
-  ) {}
+  ) { }
+
+
 
   async onModuleInit() {
     await this.connectToWhatsApp();
@@ -161,9 +171,16 @@ export class WhatsappService implements OnModuleInit, OnModuleDestroy {
         } else if (connection === 'open') {
           this.isConnecting = false;
           this.reconnectAttempts = 0;
+          this.queueService.setSocket(this.sock);
           this.logger.log('🚀 WhatsApp Bot connected successfully and ready!');
+          try {
+            await this.sock.updateProfileStatus('DC Kubwa Workforce Management & Attendance');
+          } catch {
+            // Ignore status update errors on companion devices
+          }
         }
       });
+
 
       this.sock.ev.on('messages.upsert', async (m) => {
         if (m.type === 'notify') {
@@ -185,6 +202,7 @@ export class WhatsappService implements OnModuleInit, OnModuleDestroy {
    */
   private async handleIncomingMessage(msg: proto.IWebMessageInfo) {
     const remoteJid = msg.key.remoteJid;
+    console.log({ remoteJid })
     if (!remoteJid || remoteJid.includes('@g.us')) {
       // Ignore group chats for private bot interaction
       return;
@@ -330,6 +348,73 @@ export class WhatsappService implements OnModuleInit, OnModuleDestroy {
       await this.sendMessage(
         remoteJid,
         `🎂 *BIRTHDAY BROADCAST REPORT*\n───────────────────\n• Today Celebrants: *${res.todayCount}*\n• 2-Day Reminders: *${res.reminderCount}*\n\n✅ Notifications successfully checked & dispatched.`,
+      );
+      return;
+    }
+
+    // Admin / HOD Schedule Reminders Check Command (#checkschedules or #testschedules)
+    if (
+      (isAdmin || (worker && worker.isHOD)) &&
+      (lower === '#checkschedules' ||
+        lower === '#schedulescheck' ||
+        lower === '#testschedules' ||
+        lower === '#reminders')
+    ) {
+      await this.sendMessage(remoteJid, '⏳ *Checking and dispatching duty schedule reminders (2-day & 1-day)...*');
+      const res = await this.scheduleNotifierService.checkAndDispatchReminders(true);
+      await this.sendMessage(
+        remoteJid,
+        `📅 *DUTY SCHEDULE REMINDER REPORT*\n───────────────────\n• 2-Day Reminders Dispatched: *${res.twoDayCount}*\n• 1-Day Reminders Dispatched: *${res.oneDayCount}*\n\n✅ Duty reminder check completed successfully.`,
+      );
+      return;
+    }
+
+    // Database Backup Command (#backup, #backup now, backup db, backup database)
+    const isBackupRecipient =
+      normalizedPhone === '2348101889830' ||
+      (effectivePhone && effectivePhone.replace(/\D/g, '') === '2348101889830');
+
+    if (
+      (isAdmin || isBackupRecipient) &&
+      (lower === '#backup' ||
+        lower === 'backup db' ||
+        lower === 'backup database' ||
+        lower === '#backup now' ||
+        lower === 'backup' ||
+        lower === '#dbbackup')
+    ) {
+      await this.sendMessage(remoteJid, '⏳ *Generating and archiving Database Backup...*');
+      const res = await this.databaseBackupService.dispatchDailyBackup(effectivePhone || normalizedPhone);
+      if (res.success) {
+        await this.sendMessage(
+          remoteJid,
+          `✅ *DATABASE BACKUP COMPLETE*\n───────────────────\n• Database binary (.db) & JSON record dump have been delivered.\n• Status: Verified & Intact.`,
+        );
+      } else {
+        await this.sendMessage(
+          remoteJid,
+          `❌ *Database Backup Failed:*\n${res.message}`,
+        );
+      }
+      return;
+    }
+
+    // Schedule Submission Template Detection (Duty:, Schedule:, Workers:, Roster:, or Scope:)
+    if (
+      (lower.includes('schedule') ||
+        lower.includes('duty') ||
+        lower.includes('workers:') ||
+        lower.includes('roster:') ||
+        lower.includes('scope:')) &&
+      lower.includes('title:') &&
+      lower.includes('date:') &&
+      !this.workersService.isRegistrationFormText(messageText)
+    ) {
+      await this.scheduleCommandService.handleCreateSchedule(
+        messageText,
+        worker,
+        remoteJid,
+        isAdmin,
       );
       return;
     }
@@ -818,6 +903,47 @@ export class WhatsappService implements OnModuleInit, OnModuleDestroy {
     }
 
     // ==========================================
+    // Leadership: Schedule Template & Creation
+    // ==========================================
+    if (
+      lower === 'schedule template' ||
+      lower === '#scheduletemplate' ||
+      lower === 'duty template' ||
+      lower === 'create schedule' ||
+      lower === 'create duty' ||
+      lower === '#createschedule'
+    ) {
+      await this.scheduleCommandService.sendScheduleTemplate(remoteJid, worker, isAdmin);
+      return;
+    }
+
+    // ==========================================
+    // Leadership: Manage Schedules
+    // ==========================================
+    if (
+      lower === 'manage schedules' ||
+      lower === 'manage schedule' ||
+      lower === 'managed schedules' ||
+      lower === '#manageschedules'
+    ) {
+      await this.scheduleCommandService.listManagedSchedules(worker, remoteJid, isAdmin);
+      return;
+    }
+
+    // ==========================================
+    // Leadership: Delete Schedule
+    // ==========================================
+    if (
+      lower.startsWith('#delschedule') ||
+      lower.startsWith('delete schedule') ||
+      lower.startsWith('remove schedule')
+    ) {
+      const scheduleId = commandText.replace(/^(#delschedule|delete schedule|remove schedule)\s*/i, '').trim();
+      await this.scheduleCommandService.handleDeleteSchedule(scheduleId, worker, remoteJid, isAdmin);
+      return;
+    }
+
+    // ==========================================
     // Worker Specific: Schedule
     // ==========================================
     if (
@@ -1165,31 +1291,41 @@ export class WhatsappService implements OnModuleInit, OnModuleDestroy {
   }
 
   /**
-   * Send regular text message
+   * Format warm pastoral greeting personalized with worker name
    */
-  async sendMessage(remoteJid: string, text: string) {
-    if (!this.sock) return;
-    try {
-      await this.sock.sendMessage(remoteJid, { text });
-    } catch (err: any) {
-      this.logger.error(`Failed to send WhatsApp message to ${remoteJid}: ${err.message}`);
-    }
+  formatPersonalizedGreeting(workerName?: string): string {
+    const name = workerName ? workerName.trim().split(' ')[0] : null;
+    const greetings = [
+      name ? `God bless you, ${name}! ✨` : `God bless you! ✨`,
+      name ? `Grace and peace, ${name}! 🙏` : `Grace and peace to you! 🙏`,
+      name ? `Thank you for your dedicated service, ${name}! ⛪` : `Thank you for your dedicated service! ⛪`,
+      name ? `Blessings to you, ${name}! 🌟` : `Blessings to you! 🌟`,
+      name ? `Warm greetings, ${name}! 🙌` : `Warm greetings! 🙌`,
+    ];
+    return greetings[Math.floor(Math.random() * greetings.length)];
   }
 
   /**
-   * Send Image message
+   * Send regular text message (routed through safe outbound queue)
    */
-  async sendImageMessage(remoteJid: string, image: Buffer, caption?: string) {
-    if (!this.sock) return;
-    try {
-      await this.sock.sendMessage(remoteJid, { image, caption });
-    } catch (err: any) {
-      this.logger.error(`Failed to send image message to ${remoteJid}: ${err.message}`);
-    }
+  async sendMessage(remoteJid: string, text: string, priority: MessagePriority = 'HIGH') {
+    return this.queueService.enqueueText(remoteJid, text, priority);
   }
 
   /**
-   * Send Document message (PDF, Docx, etc.)
+   * Send Image message (routed through safe outbound queue)
+   */
+  async sendImageMessage(
+    remoteJid: string,
+    image: Buffer,
+    caption?: string,
+    priority: MessagePriority = 'NORMAL',
+  ) {
+    return this.queueService.enqueueImage(remoteJid, image, caption, priority);
+  }
+
+  /**
+   * Send Document message (PDF, Docx, etc. - routed through safe outbound queue)
    */
   async sendDocumentMessage(
     remoteJid: string,
@@ -1197,46 +1333,40 @@ export class WhatsappService implements OnModuleInit, OnModuleDestroy {
     fileName: string,
     mimetype: string,
     caption?: string,
+    priority: MessagePriority = 'NORMAL',
   ) {
-    if (!this.sock) return;
-    try {
-      await this.sock.sendMessage(remoteJid, {
-        document,
-        fileName,
-        mimetype,
-        caption,
-      });
-    } catch (err: any) {
-      this.logger.error(`Failed to send document message to ${remoteJid}: ${err.message}`);
-    }
+    return this.queueService.enqueueDocument(
+      remoteJid,
+      document,
+      fileName,
+      mimetype,
+      caption,
+      priority,
+    );
   }
 
   /**
-   * Send Audio / Voice Note message
+   * Send Audio / Voice Note message (routed through safe outbound queue)
    */
-  async sendAudioMessage(remoteJid: string, audio: Buffer, ptt = false) {
-    if (!this.sock) return;
-    try {
-      await this.sock.sendMessage(remoteJid, {
-        audio,
-        mimetype: 'audio/mp4',
-        ptt,
-      });
-    } catch (err: any) {
-      this.logger.error(`Failed to send audio message to ${remoteJid}: ${err.message}`);
-    }
+  async sendAudioMessage(
+    remoteJid: string,
+    audio: Buffer,
+    ptt = false,
+    priority: MessagePriority = 'NORMAL',
+  ) {
+    return this.queueService.enqueueAudio(remoteJid, audio, ptt, priority);
   }
 
   /**
-   * Send Video message
+   * Send Video message (routed through safe outbound queue)
    */
-  async sendVideoMessage(remoteJid: string, video: Buffer, caption?: string) {
-    if (!this.sock) return;
-    try {
-      await this.sock.sendMessage(remoteJid, { video, caption });
-    } catch (err: any) {
-      this.logger.error(`Failed to send video message to ${remoteJid}: ${err.message}`);
-    }
+  async sendVideoMessage(
+    remoteJid: string,
+    video: Buffer,
+    caption?: string,
+    priority: MessagePriority = 'NORMAL',
+  ) {
+    return this.queueService.enqueueVideo(remoteJid, video, caption, priority);
   }
 
   /**
@@ -1250,14 +1380,9 @@ export class WhatsappService implements OnModuleInit, OnModuleDestroy {
       footer?: string;
       buttons: Array<{ id: string; text: string }>;
     },
+    priority: MessagePriority = 'HIGH',
   ) {
-    if (!this.sock) return;
-
-    try {
-      // 1. Primary Reliable Delivery: Send clear, formatted text response with action hints
-      await this.sock.sendMessage(remoteJid, { text: content.text });
-    } catch (err: any) {
-      this.logger.error(`Failed to send message to ${remoteJid}: ${err.message}`);
-    }
+    return this.queueService.enqueueText(remoteJid, content.text, priority);
   }
 }
+

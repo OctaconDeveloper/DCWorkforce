@@ -196,8 +196,10 @@ export class MenuCommandService {
         `• Type *#stats* — View worker statistics & summary metrics\n` +
         `• Type *#addworkers* — Bulk register workers via text\n` +
         `• Type *#birthdays* — Manually trigger birthday broadcast\n` +
+        `• Type *#backup* — Trigger instant DB backup & file delivery\n` +
         `• *Excel / CSV Upload* — Send a file to bulk import workers\n`;
     }
+
 
     text += `\n↩️ Type *menu* to return to the main menu.`;
 
@@ -292,8 +294,10 @@ export class MenuCommandService {
         `• *#stats* — Summary metrics & workforce stats\n` +
         `• *#addworkers* — Bulk text registration\n` +
         `• *#birthdays* — Manually trigger birthday broadcast\n` +
+        `• *#backup* — Trigger instant DB backup & file delivery\n` +
         `• *Excel / CSV Upload* — Send spreadsheet to bulk import\n`;
     }
+
 
     helpText +=
       `\n────────────────────────────\n` +

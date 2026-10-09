@@ -16,7 +16,9 @@ export class InfoCommandService {
    */
   async sendWorkerInfo(worker: Worker, remoteJid: string, isAdmin = false) {
     const hod = await this.workersService.findHodByDepartment(worker.department);
-    const hodName = hod ? `${hod.fullName} (${hod.phone})` : 'None currently assigned';
+    const displayPhone = this.workersService.formatDisplayPhone(worker.phone);
+    const hodPhoneDisplay = hod ? this.workersService.formatDisplayPhone(hod.phone) : '';
+    const hodName = hod ? `${hod.fullName} (${hodPhoneDisplay})` : 'None currently assigned';
 
     let leadershipBadge = '👤 Church Worker';
     if (isAdmin && worker.isHOD) {
@@ -35,7 +37,7 @@ export class InfoCommandService {
       `👤 *WORKER PROFILE & STATUS*\n` +
       `────────────────────────────\n` +
       `• *Full Name:* ${worker.fullName}\n` +
-      `• *Phone:* ${worker.phone}\n` +
+      `• *Phone:* ${displayPhone}\n` +
       `• *Leadership / Role:* ${leadershipBadge}\n` +
       `• *Department:* ${worker.department.toUpperCase()}\n` +
       (worker.unit ? `• *Unit:* ${worker.unit}\n` : '') +
@@ -55,6 +57,7 @@ export class InfoCommandService {
 
     await this.whatsappService.sendMessage(remoteJid, infoText);
   }
+
 
   /**
    * INFO / STATUS -> prompt for unregistered user

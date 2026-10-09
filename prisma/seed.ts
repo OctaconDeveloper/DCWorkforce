@@ -63,8 +63,33 @@ async function main() {
     console.warn(`⚠️ departments_and_units.json not found at ${jsonPath}`);
   }
 
+  // 3. Seed/Verify Media Head of Department (HOD)
+  const mediaHodPhone = '2348101889830';
+  const mediaHod = await prisma.worker.upsert({
+    where: { phone: mediaHodPhone },
+    update: {
+      department: 'media',
+      role: 'Head of Department',
+      isHOD: true,
+      isActive: true,
+    },
+    create: {
+      fullName: 'Media Head of Department',
+      phone: mediaHodPhone,
+      department: 'media',
+      unit: 'IT/Livestream',
+      role: 'Head of Department',
+      isHOD: true,
+      isUnitHead: false,
+      isActive: true,
+      address: 'Dominion City Kubwa, Abuja',
+    },
+  });
+  console.log(`🎬 Media Head of Department verified/seeded: ${mediaHod.fullName} (${mediaHod.phone})`);
+
   console.log('🎉 Seeding completed successfully!');
 }
+
 
 main()
   .catch((e) => {

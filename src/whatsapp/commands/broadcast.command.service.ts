@@ -155,7 +155,7 @@ export class BroadcastCommandService {
         return;
       }
 
-      await this.whatsappService.sendMessage(remoteJid, `⏳ *Sending broadcast to ${worker?.unit || 'unit'} members...*`);
+      await this.whatsappService.sendMessage(remoteJid, `⏳ *Dispatching broadcast to ${worker?.unit || 'unit'} members (with 3-5s safe delivery pacing)...*`);
       try {
         const result = await this.broadcastService.broadcastToUnit(worker!, messageBody, mediaPayload);
         await this.whatsappService.sendMessage(
@@ -201,7 +201,7 @@ export class BroadcastCommandService {
         return;
       }
 
-      await this.whatsappService.sendMessage(remoteJid, `⏳ *Sending broadcast to department members...*`);
+      await this.whatsappService.sendMessage(remoteJid, `⏳ *Dispatching broadcast to department members (with 3-5s safe delivery pacing)...*`);
       try {
         let result;
         if (isAdmin && deptName) {
@@ -252,7 +252,7 @@ export class BroadcastCommandService {
         return;
       }
 
-      await this.whatsappService.sendMessage(remoteJid, `⏳ *Sending broadcast to group "${groupName}"...*`);
+      await this.whatsappService.sendMessage(remoteJid, `⏳ *Dispatching broadcast to group "${groupName}" (with 3-5s safe delivery pacing)...*`);
       try {
         const result = await this.broadcastService.broadcastToGroup(groupName, messageBody, mediaPayload);
         await this.whatsappService.sendMessage(
@@ -284,7 +284,7 @@ export class BroadcastCommandService {
         return;
       }
 
-      await this.whatsappService.sendMessage(remoteJid, `⏳ *Dispatching church-wide broadcast to all active workers...*`);
+      await this.whatsappService.sendMessage(remoteJid, `⏳ *Dispatching church-wide broadcast to all active workers (with 3-5s safe delivery pacing)...*`);
       try {
         const result = await this.broadcastService.broadcastToAllWorkers(messageBody, mediaPayload);
         await this.whatsappService.sendMessage(
@@ -296,6 +296,7 @@ export class BroadcastCommandService {
       }
       return;
     }
+
 
     // Default usage guide if command didn't match
     let guide =

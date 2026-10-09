@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>DC Kubwa Workforce Management System — Comprehensive Bot Manual</title>
+  <title>DC Kubwa Workforce Management System — Comprehensive Operations Manual</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
@@ -45,23 +45,23 @@
       color: var(--text-main);
       background-color: #ffffff;
       line-height: 1.6;
-      font-size: 13.5px;
+      font-size: 13px;
       -webkit-font-smoothing: antialiased;
     }
 
     @page {
       size: A4 portrait;
-      margin: 18mm 16mm 20mm 16mm;
+      margin: 16mm 14mm 18mm 14mm;
       @bottom-right {
-        content: counter(page);
+        content: "Page " counter(page);
         font-family: 'Plus Jakarta Sans', sans-serif;
-        font-size: 9pt;
+        font-size: 8.5pt;
         color: #94a3b8;
       }
       @bottom-left {
-        content: "Dominion City Kubwa • Workforce Bot Manual";
+        content: "Dominion City Kubwa • Workforce Bot Manual (v2.5.0)";
         font-family: 'Plus Jakarta Sans', sans-serif;
-        font-size: 9pt;
+        font-size: 8.5pt;
         color: #94a3b8;
       }
     }
@@ -78,12 +78,12 @@
 
     /* Cover Page */
     .cover-page {
-      min-height: 100vh;
+      min-height: 96vh;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 60px 40px;
-      background: linear-gradient(145deg, #0f172a 0%, #1e3a8a 50%, #1e1b4b 100%);
+      padding: 50px 36px;
+      background: linear-gradient(145deg, #0b1329 0%, #1e3a8a 50%, #1e1b4b 100%);
       color: #ffffff;
       border-radius: 12px;
       page-break-after: always;
@@ -94,16 +94,12 @@
     .cover-page::before {
       content: "";
       position: absolute;
-      top: -10%;
-      right: -10%;
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, rgba(59, 130, 246, 0.25) 0%, rgba(0,0,0,0) 70%);
+      top: -15%;
+      right: -15%;
+      width: 550px;
+      height: 550px;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, rgba(0,0,0,0) 70%);
       border-radius: 50%;
-    }
-
-    .cover-header {
-      z-index: 1;
     }
 
     .church-badge {
@@ -115,20 +111,20 @@
       border: 1px solid rgba(255, 255, 255, 0.25);
       padding: 8px 18px;
       border-radius: 30px;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 600;
       letter-spacing: 0.5px;
       text-transform: uppercase;
       color: #93c5fd;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .cover-title {
-      font-size: 38px;
+      font-size: 36px;
       font-weight: 800;
       line-height: 1.15;
       letter-spacing: -0.5px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       color: #ffffff;
     }
 
@@ -139,18 +135,18 @@
     }
 
     .cover-subtitle {
-      font-size: 17px;
+      font-size: 15.5px;
       font-weight: 400;
       color: #cbd5e1;
-      max-width: 600px;
+      max-width: 620px;
       line-height: 1.5;
     }
 
     .cover-roles {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 12px;
-      margin: 32px 0;
+      margin: 28px 0;
       z-index: 1;
     }
 
@@ -160,9 +156,9 @@
       gap: 8px;
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.15);
-      padding: 10px 16px;
-      border-radius: 10px;
-      font-size: 13px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 12px;
       font-weight: 600;
     }
 
@@ -173,11 +169,11 @@
 
     .cover-footer {
       border-top: 1px solid rgba(255, 255, 255, 0.15);
-      padding-top: 24px;
+      padding-top: 20px;
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
-      font-size: 12px;
+      font-size: 11.5px;
       color: #94a3b8;
       z-index: 1;
     }
@@ -185,42 +181,42 @@
     .cover-meta strong {
       display: block;
       color: #ffffff;
-      font-size: 14px;
-      margin-bottom: 4px;
+      font-size: 13.5px;
+      margin-bottom: 2px;
     }
 
     /* Table of Contents */
     .toc-container {
       background: var(--bg-light);
       border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 24px;
-      margin-bottom: 30px;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 24px;
     }
 
     .toc-title {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 700;
       color: var(--primary-dark);
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .toc-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px 28px;
+      gap: 14px 24px;
     }
 
     .toc-section-title {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
       color: var(--primary);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       border-bottom: 2px solid #cbd5e1;
-      padding-bottom: 4px;
+      padding-bottom: 3px;
     }
 
     .toc-list {
@@ -228,8 +224,8 @@
     }
 
     .toc-list li {
-      margin-bottom: 6px;
-      font-size: 12.5px;
+      margin-bottom: 5px;
+      font-size: 11.5px;
       color: var(--text-muted);
       display: flex;
       justify-content: space-between;
@@ -249,18 +245,18 @@
     }
 
     h1 {
-      font-size: 26px;
+      font-size: 23px;
       border-bottom: 2.5px solid var(--primary-light);
-      padding-bottom: 8px;
-      margin: 32px 0 16px 0;
+      padding-bottom: 6px;
+      margin: 26px 0 14px 0;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     h2 {
-      font-size: 19px;
-      margin: 24px 0 12px 0;
+      font-size: 17px;
+      margin: 20px 0 10px 0;
       color: var(--primary);
       display: flex;
       align-items: center;
@@ -268,22 +264,22 @@
     }
 
     h3 {
-      font-size: 15px;
-      margin: 18px 0 8px 0;
+      font-size: 14px;
+      margin: 14px 0 6px 0;
       color: var(--text-main);
     }
 
     p {
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       color: var(--text-main);
     }
 
     /* Badges */
     .badge {
       display: inline-block;
-      padding: 3px 9px;
-      border-radius: 6px;
-      font-size: 11px;
+      padding: 2.5px 7px;
+      border-radius: 5px;
+      font-size: 10.5px;
       font-weight: 700;
       letter-spacing: 0.3px;
       text-transform: uppercase;
@@ -296,21 +292,22 @@
     .badge-guest { background: var(--role-guest-bg); color: var(--role-guest); border: 1px solid #cbd5e1; }
     .badge-wa { background: var(--wa-bg); color: #065f46; border: 1px solid #a7f3d0; }
     .badge-tg { background: var(--tg-bg); color: #0369a1; border: 1px solid #bae6fd; }
+    .badge-soon { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
 
     /* Tables */
     table {
       width: 100%;
       border-collapse: collapse;
-      margin: 16px 0 24px 0;
-      font-size: 12.5px;
+      margin: 14px 0 20px 0;
+      font-size: 12px;
       background: #ffffff;
-      border-radius: 8px;
+      border-radius: 6px;
       overflow: hidden;
       border: 1px solid var(--border-color);
     }
 
     th, td {
-      padding: 10px 14px;
+      padding: 8px 12px;
       text-align: left;
       vertical-align: top;
     }
@@ -320,7 +317,7 @@
       color: var(--primary-dark);
       font-weight: 700;
       border-bottom: 1.5px solid var(--border-color);
-      font-size: 12px;
+      font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
@@ -337,17 +334,17 @@
       font-family: 'JetBrains Mono', monospace;
       background-color: #f1f5f9;
       color: #0f172a;
-      padding: 2px 6px;
+      padding: 1.5px 5px;
       border-radius: 4px;
-      font-size: 11.5px;
+      font-size: 11px;
       border: 1px solid #e2e8f0;
     }
 
     /* Chat Simulation Boxes */
     .chat-box {
-      margin: 16px 0;
-      border-radius: 10px;
-      padding: 16px;
+      margin: 14px 0;
+      border-radius: 8px;
+      padding: 12px 14px;
       position: relative;
     }
 
@@ -365,22 +362,22 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 10px;
-      padding-bottom: 6px;
+      margin-bottom: 8px;
+      padding-bottom: 4px;
       border-bottom: 1px solid rgba(0,0,0,0.08);
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 700;
     }
 
     .chat-bubble {
       background-color: #ffffff;
-      padding: 12px 14px;
-      border-radius: 8px;
+      padding: 10px 12px;
+      border-radius: 7px;
       box-shadow: 0 1px 2px rgba(0,0,0,0.05);
       font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
+      font-size: 11.5px;
       white-space: pre-wrap;
-      line-height: 1.5;
+      line-height: 1.45;
       color: #1e293b;
       border: 1px solid rgba(0,0,0,0.05);
     }
@@ -396,17 +393,17 @@
     }
 
     .callout {
-      padding: 14px 18px;
+      padding: 12px 16px;
       border-radius: 8px;
-      margin: 16px 0;
-      font-size: 13px;
+      margin: 14px 0;
+      font-size: 12.5px;
       display: flex;
-      gap: 12px;
+      gap: 10px;
       align-items: flex-start;
     }
 
     .callout-icon {
-      font-size: 18px;
+      font-size: 16px;
       line-height: 1;
     }
 
@@ -414,11 +411,56 @@
     .callout.warning { background-color: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
     .callout.danger { background-color: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
     .callout.success { background-color: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+
+    .flow-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin: 14px 0;
+    }
+
+    .step-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px;
+      position: relative;
+    }
+
+    .step-num {
+      position: absolute;
+      top: -9px;
+      left: 10px;
+      background: var(--primary);
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 10.5px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .step-card h4 {
+      margin-top: 4px;
+      margin-bottom: 4px;
+      font-size: 12.5px;
+    }
+
+    .step-card p {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin: 0;
+    }
   </style>
 </head>
 <body>
 
+  <!-- ========================================== -->
   <!-- COVER PAGE -->
+  <!-- ========================================== -->
   <div class="cover-page">
     <div class="cover-header">
       <div class="church-badge">
@@ -426,80 +468,118 @@
       </div>
       <h1 class="cover-title">
         The Official Workforce Bot<br>
-        <span>Operation Manual & Command Book</span>
+        <span>Exhaustive Operations Manual & Command Reference</span>
       </h1>
       <p class="cover-subtitle">
-        A comprehensive guide covering every bot feature, command syntax, member search tools, broadcast engine, and administrative workflows across WhatsApp & Telegram.
+        The definitive handbook detailing every command, parameter, media broadcast engine, member search tool, registration safeguard, and response message across WhatsApp & Telegram platforms.
       </p>
 
       <div class="cover-roles">
-        <div class="role-pill admin">🔴 <strong>Church Administrators</strong></div>
-        <div class="role-pill hod">🟣 <strong>Heads of Departments (HODs)</strong></div>
-        <div class="role-pill unit">🔵 <strong>Heads of Units (Unit Heads)</strong></div>
-        <div class="role-pill worker">🟢 <strong>Registered Workforce & Members</strong></div>
+        <div class="role-pill admin">🔴 <strong>Church Administrators</strong> (Super Admins)</div>
+        <div class="role-pill hod">🟣 <strong>Heads of Departments</strong> (HODs)</div>
+        <div class="role-pill unit">🔵 <strong>Heads of Units</strong> (Unit Heads)</div>
+        <div class="role-pill worker">🟢 <strong>Church Workforce & Members</strong></div>
       </div>
     </div>
 
     <div class="cover-footer">
       <div class="cover-meta">
         <strong>DOMINION CITY KUBWA WORKFORCE PORTAL</strong>
-        <span>Systems Engineering & Media Directorate • Version 2.5.0</span>
+        <span>Systems Engineering & Media Directorate • Version 2.5.0 Complete</span>
       </div>
       <div class="cover-date">
         Published: October 2026<br>
-        Platforms: WhatsApp Baileys & Telegram Bot API
+        Engines: Baileys WhatsApp Multi-Device & Telegraf Telegram Bot API
       </div>
     </div>
   </div>
 
+  <!-- ========================================== -->
   <!-- TABLE OF CONTENTS -->
+  <!-- ========================================== -->
   <div class="toc-container avoid-break">
     <div class="toc-title">📖 Manual Book Contents</div>
     <div class="toc-grid">
       <div>
-        <div class="toc-section-title">Part I: Architecture & Roles</div>
+        <div class="toc-section-title">Part I: Architecture & Security</div>
         <ul class="toc-list">
-          <li><span>1. System Architecture & Capabilities</span> <span>03</span></li>
-          <li><span>2. Role Hierarchy & Permission Matrix</span> <span>04</span></li>
+          <li><span>1. System Architecture & Objectives</span> <span>03</span></li>
+          <li><span>2. Role Hierarchy & Permissions Matrix</span> <span>04</span></li>
+          <li><span>3. Onboarding Policy & Status</span> <span>05</span></li>
         </ul>
 
-        <div class="toc-section-title" style="margin-top: 14px;">Part II: Registration & Search</div>
+        <div class="toc-section-title" style="margin-top: 12px;">Part II: Registration & Search</div>
         <ul class="toc-list">
-          <li><span>3. Registration & Duplicate Phone Rejection</span> <span>05</span></li>
-          <li><span>4. Member Search Tool for Leaders</span> <span>06</span></li>
+          <li><span>4. Member Registration & Strict Duplicate Rejection</span> <span>06</span></li>
+          <li><span>5. Case-Insensitive Member Search for Leaders</span> <span>07</span></li>
         </ul>
 
-        <div class="toc-section-title" style="margin-top: 14px;">Part III: WhatsApp Bot Reference</div>
+        <div class="toc-section-title" style="margin-top: 12px;">Part III: Multi-Target Broadcast Engine</div>
         <ul class="toc-list">
-          <li><span>5. Interactive Menus & Quick Shortcuts</span> <span>07</span></li>
-          <li><span>6. All Commands, Broadcasts & Responses</span> <span>08</span></li>
+          <li><span>6. Text & Media Broadcast System (Images, PDF, Audio, Video)</span> <span>08</span></li>
+          <li><span>7. Custom Broadcast Groups Management</span> <span>09</span></li>
         </ul>
       </div>
 
       <div>
-        <div class="toc-section-title">Part IV: Telegram Bot Reference</div>
+        <div class="toc-section-title">Part IV: WhatsApp Bot Complete Catalog</div>
         <ul class="toc-list">
-          <li><span>7. Telegram Slash Commands & Keyboards</span> <span>09</span></li>
-          <li><span>8. Inline Approvals & Actions</span> <span>10</span></li>
+          <li><span>8. Category Menus, Duty Schedules & Public Commands</span> <span>10</span></li>
+          <li><span>9. Approvals, Moderation & Admin Tools (#stats, Bulk Import)</span> <span>11</span></li>
         </ul>
 
-        <div class="toc-section-title" style="margin-top: 14px;">Part V: Role SOPs & Appendix</div>
+        <div class="toc-section-title" style="margin-top: 12px;">Part V: Gallery, Resources & Coming Soon</div>
         <ul class="toc-list">
-          <li><span>9. Standard Operating Procedures by Role</span> <span>11</span></li>
-          <li><span>10. Spreadsheet Import Specs & FAQ</span> <span>12</span></li>
+          <li><span>10. Digital Media Library & Upcoming Services</span> <span>12</span></li>
+        </ul>
+
+        <div class="toc-section-title" style="margin-top: 12px;">Part VI: Telegram Bot & Appendix</div>
+        <ul class="toc-list">
+          <li><span>11. Telegram Slash Commands & Keyboards</span> <span>13</span></li>
+          <li><span>12. Role SOPs, Spreadsheet Specs & FAQ</span> <span>14</span></li>
         </ul>
       </div>
     </div>
   </div>
 
-  <!-- PART I: SYSTEM OVERVIEW -->
+  <!-- ========================================== -->
+  <!-- PART I: ARCHITECTURE & PERMISSIONS -->
+  <!-- ========================================== -->
   <h1>Part I: System Overview & Permissions</h1>
 
-  <h2>1. Role Hierarchy & Access Matrix</h2>
+  <h2>1. System Architecture & Objectives</h2>
+  <p>
+    The <strong>DC Kubwa Workforce Management System</strong> is an automated enterprise bot infrastructure designed to streamline church workforce communications, member records, duty rosters, approval workflows, and broadcast notifications.
+  </p>
+
+  <div class="flow-steps">
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <h4>Database & Profiles</h4>
+      <p>Tracks active workers, department/unit assignments, marital status, and leadership credentials (HOD/Unit Head/Admin).</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <h4>Media Broadcast Engine</h4>
+      <p>Dispatches text, photos, PDFs & voice notes to units, departments, church-wide, or custom groups.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <h4>Member Search</h4>
+      <p>Provides fast, case-insensitive search by Name, Phone, Unit, Department, or Role within leadership boundaries.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">4</div>
+      <h4>Data Protection</h4>
+      <p>Prevents duplicate registrations by phone number and manages moderation queues.</p>
+    </div>
+  </div>
+
+  <h2>2. Complete Role Permissions Matrix</h2>
   <table class="avoid-break">
     <thead>
       <tr>
-        <th>Feature / Command</th>
+        <th>Command / Feature</th>
         <th><span class="badge badge-admin">Admin</span></th>
         <th><span class="badge badge-hod">HOD</span></th>
         <th><span class="badge badge-unit">Unit Head</span></th>
@@ -509,7 +589,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><strong>Profile, Duty Schedule, Info</strong></td>
+        <td><strong>Profile, Duty Schedule, Status</strong></td>
         <td>✅ Full</td>
         <td>✅ Full</td>
         <td>✅ Full</td>
@@ -517,7 +597,7 @@
         <td>❌ Prompt</td>
       </tr>
       <tr>
-        <td><strong>Member Search (<code>search &lt;query&gt;</code>)</strong></td>
+        <td><strong>Case-Insensitive Member Search (<code>search</code>)</strong></td>
         <td>✅ All Depts</td>
         <td>✅ Own Dept</td>
         <td>✅ Own Unit</td>
@@ -525,7 +605,15 @@
         <td>❌ Denied</td>
       </tr>
       <tr>
-        <td><strong>Worker Registration Submission</strong></td>
+        <td><strong>View Member Roster (<code>members</code>)</strong></td>
+        <td>✅ All Depts</td>
+        <td>✅ Own Dept</td>
+        <td>✅ Own Unit</td>
+        <td>❌ Denied</td>
+        <td>❌ Denied</td>
+      </tr>
+      <tr>
+        <td><strong>Submit Worker Registration Form</strong></td>
         <td>✅ Admin Mode</td>
         <td>✅ View</td>
         <td>✅ View</td>
@@ -533,7 +621,7 @@
         <td>✅ Submit</td>
       </tr>
       <tr>
-        <td><strong>Approve/Reject Registrations</strong></td>
+        <td><strong>Approve/Reject Pending Registrations</strong></td>
         <td>✅ All Depts</td>
         <td>✅ Own Dept</td>
         <td>✅ Own Unit</td>
@@ -541,7 +629,7 @@
         <td>❌ Denied</td>
       </tr>
       <tr>
-        <td><strong>Broadcast to Unit</strong></td>
+        <td><strong>Broadcast to Unit (Text & Media)</strong></td>
         <td>✅ Any Unit</td>
         <td>✅ Dept Units</td>
         <td>✅ Own Unit</td>
@@ -549,7 +637,7 @@
         <td>❌ Denied</td>
       </tr>
       <tr>
-        <td><strong>Broadcast to Department</strong></td>
+        <td><strong>Broadcast to Department (Text & Media)</strong></td>
         <td>✅ Any Dept</td>
         <td>✅ Own Dept</td>
         <td>❌ Denied</td>
@@ -557,7 +645,7 @@
         <td>❌ Denied</td>
       </tr>
       <tr>
-        <td><strong>Church-Wide Broadcast (<code>all</code>)</strong></td>
+        <td><strong>Church-Wide Broadcast (<code>broadcast all</code>)</strong></td>
         <td>✅ Global</td>
         <td>❌ Denied</td>
         <td>❌ Denied</td>
@@ -565,7 +653,7 @@
         <td>❌ Denied</td>
       </tr>
       <tr>
-        <td><strong>Custom Broadcast Groups</strong></td>
+        <td><strong>Custom Broadcast Groups Management</strong></td>
         <td>✅ Full Control</td>
         <td>❌ Denied</td>
         <td>❌ Denied</td>
@@ -573,7 +661,23 @@
         <td>❌ Denied</td>
       </tr>
       <tr>
-        <td><strong>Excel / CSV Bulk Import & #stats</strong></td>
+        <td><strong>Appoint Unit Heads (<code>make unit head</code>)</strong></td>
+        <td>✅ All Depts</td>
+        <td>✅ Own Dept</td>
+        <td>❌ Denied</td>
+        <td>❌ Denied</td>
+        <td>❌ Denied</td>
+      </tr>
+      <tr>
+        <td><strong>Excel / CSV Spreadsheet Bulk Import</strong></td>
+        <td>✅ Exclusive</td>
+        <td>❌ Denied</td>
+        <td>❌ Denied</td>
+        <td>❌ Denied</td>
+        <td>❌ Denied</td>
+      </tr>
+      <tr>
+        <td><strong>System Analytics (<code>#stats</code>) & Birthday Scan</strong></td>
         <td>✅ Exclusive</td>
         <td>❌ Denied</td>
         <td>❌ Denied</td>
@@ -585,21 +689,43 @@
 
   <div class="page-break"></div>
 
+  <!-- ========================================== -->
   <!-- PART II: REGISTRATION & SEARCH -->
+  <!-- ========================================== -->
   <h1>Part II: Registration & Member Search</h1>
 
-  <h2>2. Registration & Duplicate Rejection Safeguard</h2>
-  <p>
-    To ensure database integrity and eliminate duplicate profiles, all new registration attempts are validated against existing records:
-  </p>
-
-  <div class="callout danger avoid-break">
-    <div class="callout-icon">🛡️</div>
+  <h2>3. WhatsApp Onboarding Status & Policy</h2>
+  <div class="callout warning avoid-break">
+    <div class="callout-icon">⚠️</div>
     <div>
-      <strong>Automatic Phone Number Collision Check:</strong><br>
-      If a registration form is submitted containing a phone number that is already registered to an active worker or pending approval, the submission is immediately rejected with a detailed notification identifying the existing worker profile.
+      <strong>Notice: Onboarding via WhatsApp is Disabled</strong><br>
+      Direct self-service profile claiming and device linking via WhatsApp has been disabled. If an unregistered user or guest sends <code>onboard</code>, <code>claim</code>, <code>link</code>, <code>verify</code>, or <code>change device</code>, the bot responds with the disabled notice and instructs them to use <code>register</code> or contact their HOD/Admin.
     </div>
   </div>
+
+  <div class="chat-box whatsapp avoid-break">
+    <div class="chat-header">
+      <span class="platform">🟢 WhatsApp • Onboarding Attempt Response</span>
+      <span>Command: onboard / link / verify</span>
+    </div>
+    <div class="chat-bubble">⚠️ *ONBOARDING VIA WHATSAPP IS DISABLED*
+────────────────────────────
+Direct profile onboarding and device claiming via WhatsApp has been disabled.
+
+• *New to workforce?* Type *register* or *template* to fill out the official worker registration form.
+• *Already registered?* If your profile is not linked or you changed phone numbers, please contact your Head of Department (HOD) or Church Administrator.
+
+_Type *menu* to return to the main menu._</div>
+  </div>
+
+  <h2>4. Strict Duplicate Registration Rejection</h2>
+  <p>
+    When a user submits a worker registration form, the system performs validation checks to eliminate duplicate entries:
+  </p>
+  <ul style="margin-left: 20px; margin-bottom: 12px;">
+    <li><strong>Active Worker Match:</strong> If the submitted phone number already belongs to an active church worker, the registration is <strong>instantly rejected</strong>, showing the existing worker's name, department, unit, and role.</li>
+    <li><strong>Pending Application Match:</strong> If a registration request for that phone number is already pending review with an HOD, the applicant is notified of their pending status.</li>
+  </ul>
 
   <div class="chat-box whatsapp avoid-break">
     <div class="chat-header">
@@ -614,18 +740,20 @@ A church worker record already exists with the phone number *08012345678*:
 • *Role:* Member
 • *Status:* Active ✅
 
-💡 *Note:* If you need to update your details or change departments, please contact your Head of Department (HOD) or Church Administrator.</div>
+💡 *Note:* If you need to update your details or change departments, please contact your Head of Department (HOD) or Church Administrator.
+
+_Type *menu* to return to the main menu._</div>
   </div>
 
-  <h2>3. Member Search Tool for Leadership</h2>
+  <h2>5. Case-Insensitive Member Search for Leaders</h2>
   <p>
-    Church Administrators, Department Heads (HODs), and Unit Heads can search for registered workforce members across multiple parameters (Name, Phone Number, Unit, Role, Address).
+    Admins, HODs, and Unit Heads can search for workforce members. The search is <strong>100% case-insensitive</strong> and matches across <strong>Name, Phone Number, Unit, Role, Department, and Address</strong>.
   </p>
 
   <div class="chat-box whatsapp avoid-break">
     <div class="chat-header">
       <span class="platform">🟢 WhatsApp • Member Search Output</span>
-      <span>Command: search Sound</span>
+      <span>Command: search sound (or SEARCH SOUND / Search Sound)</span>
     </div>
     <div class="chat-bubble">🔍 *SEARCH RESULTS — MEDIA DEPARTMENT (2 found)*
 ───────────────────────────
@@ -639,107 +767,638 @@ A church worker record already exists with the phone number *08012345678*:
 • *Phone:* 08099887766
 • *Dept:* MEDIA | Unit: *Sound*
 • *Role:* Member
-• *DLI:* Yes | *DCA:* No</div>
+• *DLI:* Yes | *DCA:* No
+
+───────────────────────────
+_Type *menu* to return to the main menu._</div>
   </div>
 
   <div class="page-break"></div>
 
-  <!-- PART III: WHATSAPP BOT REFERENCE -->
-  <h1>Part III: WhatsApp Bot Reference</h1>
+  <!-- ========================================== -->
+  <!-- PART III: BROADCAST ENGINE -->
+  <!-- ========================================== -->
+  <h1>Part III: Multi-Target Broadcast Engine</h1>
 
-  <h2>4. Complete Command Catalog</h2>
+  <h2>6. Text & Media Broadcast System</h2>
+  <p>
+    The workforce bot contains a broadcast engine capable of sending plain text, images, flyer documents, audio/voice notes, and video highlights to targeted workforce groups.
+  </p>
+
+  <h3>Supported Broadcast Scopes:</h3>
   <table class="avoid-break">
     <thead>
       <tr>
-        <th>Command</th>
-        <th>Role</th>
+        <th>Broadcast Command</th>
+        <th>Allowed Roles</th>
+        <th>Target Recipients</th>
+        <th>Media Support</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>broadcast unit &lt;message&gt;</code></td>
+        <td><span class="badge badge-unit">Unit Head</span> <span class="badge badge-hod">HOD</span> <span class="badge badge-admin">Admin</span></td>
+        <td>All active workers in the sender's unit.</td>
+        <td>✅ Photos, PDFs, Audio, Video</td>
+      </tr>
+      <tr>
+        <td><code>broadcast dept &lt;message&gt;</code></td>
+        <td><span class="badge badge-hod">HOD</span> <span class="badge badge-admin">Admin</span></td>
+        <td>All active workers in the sender's department.</td>
+        <td>✅ Photos, PDFs, Audio, Video</td>
+      </tr>
+      <tr>
+        <td><code>broadcast all &lt;message&gt;</code></td>
+        <td><span class="badge badge-admin">Admin Only</span></td>
+        <td>Every registered worker across all church departments.</td>
+        <td>✅ Photos, PDFs, Audio, Video</td>
+      </tr>
+      <tr>
+        <td><code>broadcast group &lt;name&gt; &lt;msg&gt;</code></td>
+        <td><span class="badge badge-admin">Admin Only</span></td>
+        <td>Members enrolled in the specified custom broadcast group.</td>
+        <td>✅ Photos, PDFs, Audio, Video</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>How to Broadcast Media (Photos, Flyers, PDFs, Voice Notes):</h3>
+  <div class="flow-steps">
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <h4>Attach Media</h4>
+      <p>In WhatsApp or Telegram, select the photo, PDF flyer, audio note, or video you wish to broadcast.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <h4>Set Caption</h4>
+      <p>Write the broadcast command directly in the media caption: <code>broadcast unit Meeting tomorrow by 6 PM</code>.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <h4>Automatic Dispatch</h4>
+      <p>The bot downloads the media buffer, detects mimetype (image/doc/audio/video), and sends both media and caption to all targeted recipients.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">4</div>
+      <h4>Delivery Summary</h4>
+      <p>You receive an instant receipt showing delivered count, failed count, and target group.</p>
+    </div>
+  </div>
+
+  <div class="callout info avoid-break">
+    <div class="callout-icon">🛡️</div>
+    <div>
+      <strong>Enterprise WhatsApp Anti-Ban & Outbound Queue Engine (&lt;3% Ban Risk):</strong><br>
+      To protect the church's WhatsApp line during peak Sunday attendance spikes, the system routes all outgoing messages through a centralized <code>WhatsAppQueueService</code>:
+      <ul style="margin: 6px 0 0 16px; padding: 0;">
+        <li><strong>FIFO Priority Queue:</strong> Direct 1-on-1 replies receive high priority while mass broadcasts are smoothly serialized at max 20 msgs/min.</li>
+        <li><strong>Humanized Typing Presence:</strong> The bot simulates realistic <code>composing</code> (1.2–2.0s) before every message and <code>recording</code> before voice clips.</li>
+        <li><strong>Randomized Jitter Delays:</strong> Every outgoing reply pauses for a randomized 3 to 5 seconds (<code>3000ms–5000ms</code>) to match human pacing.</li>
+        <li><strong>Dynamic Pastoral Personalization:</strong> Replies dynamically insert worker first names and rotate warm blessings so messages are never flagged as repetitive spam.</li>
+        <li><strong>Link-on-Demand Protection:</strong> Public menus and mass broadcasts avoid blast URLs; links are delivered only when the worker explicitly requests them.</li>
+        <li><strong>Session Credentials Backup:</strong> Auth session credentials (<code>creds.json</code>) are bundled into the automated nightly backup sent to Media HOD (<strong>+2348101889830</strong>).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="chat-box whatsapp avoid-break">
+    <div class="chat-header">
+      <span class="platform">🟢 WhatsApp • Broadcast Progress & Delivery Receipt</span>
+    </div>
+    <div class="chat-bubble">⏳ *Dispatching broadcast to Sound members (with 3-5s safe delivery pacing)...*
+
+✅ *UNIT BROADCAST COMPLETED*
+────────────────────────────
+• Target: *Media - Sound*
+• Delivered: *18 / 18* workers
+• Failed: *0*</div>
+  </div>
+
+
+  <h2>7. Custom Broadcast Groups Management (Admin Only)</h2>
+  <table class="avoid-break">
+    <thead>
+      <tr>
+        <th>Group Command</th>
         <th>Syntax / Example</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>groups</code></td>
+        <td><code>groups</code></td>
+        <td>Lists all custom broadcast groups and current member counts.</td>
+      </tr>
+      <tr>
+        <td><code>add group &lt;name&gt; [desc]</code></td>
+        <td><code>add group youth-leads Youth executive team</code></td>
+        <td>Creates a new custom broadcast group.</td>
+      </tr>
+      <tr>
+        <td><code>group view &lt;name&gt;</code></td>
+        <td><code>group view youth-leads</code></td>
+        <td>Lists all workers enrolled in the specified group.</td>
+      </tr>
+      <tr>
+        <td><code>group add &lt;name&gt; &lt;phone/name&gt;</code></td>
+        <td><code>group add youth-leads 08012345678</code></td>
+        <td>Enrolls a registered worker into the group.</td>
+      </tr>
+      <tr>
+        <td><code>group remove &lt;name&gt; &lt;phone&gt;</code></td>
+        <td><code>group remove youth-leads 08012345678</code></td>
+        <td>Removes a worker from the group.</td>
+      </tr>
+      <tr>
+        <td><code>delete group &lt;name&gt;</code></td>
+        <td><code>delete group youth-leads</code></td>
+        <td>Permanently deletes the custom group.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-break"></div>
+
+  <!-- ========================================== -->
+  <!-- PART IV: WHATSAPP BOT REFERENCE -->
+  <!-- ========================================== -->
+  <h1>Part IV: Complete WhatsApp Bot Reference</h1>
+
+  <h2>8. Category Menus & Shortcuts</h2>
+  <table class="avoid-break">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Shortcut</th>
+        <th>Available Commands</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><code>menu</code></td>
-        <td><span class="badge badge-guest">Public</span></td>
-        <td><code>menu</code></td>
-        <td>Main category navigation menu.</td>
+        <td><strong>1. Profile & Duty</strong></td>
+        <td><code>1</code> or <code>my duty</code></td>
+        <td><code>info</code>, <code>status</code>, <code>schedule</code>, <code>register</code>, <code>template</code></td>
+        <td>View worker profile, leadership badges, DLI records, and duty rosters.</td>
       </tr>
       <tr>
-        <td><code>search &lt;query&gt;</code></td>
-        <td><span class="badge badge-unit">Unit Head</span></td>
-        <td><code>search Emeka</code></td>
-        <td>Searches workforce members within user's leadership scope.</td>
+        <td><strong>2. Church Info</strong></td>
+        <td><code>2</code> or <code>church</code></td>
+        <td><code>departments</code>, <code>organogram</code>, <code>events</code>, <code>announcements</code></td>
+        <td>Church departments, leadership organogram, weekly services, and news bulletins.</td>
       </tr>
       <tr>
-        <td><code>info</code> / <code>status</code></td>
-        <td><span class="badge badge-worker">Worker</span></td>
-        <td><code>info</code></td>
-        <td>Worker profile, leadership badges, DLI status, and address.</td>
+        <td><strong>3. Giving & Projects</strong></td>
+        <td><code>3</code> or <code>giving</code></td>
+        <td><code>offering</code>, <code>tithe</code>, <code>donations</code>, <code>projects</code></td>
+        <td>Church bank accounts for tithes, offerings, and special developmental projects.</td>
       </tr>
       <tr>
-        <td><code>schedule</code></td>
-        <td><span class="badge badge-worker">Worker</span></td>
-        <td><code>schedule</code></td>
-        <td>Upcoming duty dates, times, and descriptions.</td>
+        <td><strong>4. Leadership Tools</strong></td>
+        <td><code>4</code> or <code>leadership</code></td>
+        <td><code>search</code>, <code>members</code>, <code>pending</code>, <code>accept</code>, <code>reject</code>, <code>broadcast</code></td>
+        <td>Restricted to HODs, Unit Heads, and Admins for workforce management.</td>
       </tr>
       <tr>
-        <td><code>pending</code></td>
-        <td><span class="badge badge-unit">Unit Head</span></td>
-        <td><code>pending</code></td>
-        <td>Lists pending worker applications with approval indices.</td>
-      </tr>
-      <tr>
-        <td><code>accept &lt;#&gt;</code></td>
-        <td><span class="badge badge-unit">Unit Head</span></td>
-        <td><code>accept 1</code></td>
-        <td>Approves pending applicant #1 and registers worker.</td>
-      </tr>
-      <tr>
-        <td><code>reject &lt;#&gt;</code></td>
-        <td><span class="badge badge-unit">Unit Head</span></td>
-        <td><code>reject 1</code></td>
-        <td>Declines pending applicant #1 with optional reason.</td>
-      </tr>
-      <tr>
-        <td><code>members</code></td>
-        <td><span class="badge badge-unit">Unit Head</span></td>
-        <td><code>members</code></td>
-        <td>Lists all active workforce members in unit/department.</td>
-      </tr>
-      <tr>
-        <td><code>broadcast unit</code></td>
-        <td><span class="badge badge-unit">Unit Head</span></td>
-        <td><code>broadcast unit &lt;msg&gt;</code></td>
-        <td>Dispatches notification to all workers in sender's unit.</td>
-      </tr>
-      <tr>
-        <td><code>broadcast dept</code></td>
-        <td><span class="badge badge-hod">HOD</span></td>
-        <td><code>broadcast dept &lt;msg&gt;</code></td>
-        <td>Dispatches notification to all workers in sender's department.</td>
-      </tr>
-      <tr>
-        <td><code>broadcast all</code></td>
-        <td><span class="badge badge-admin">Admin</span></td>
-        <td><code>broadcast all &lt;msg&gt;</code></td>
-        <td>Sends church-wide broadcast notification to all workers.</td>
-      </tr>
-      <tr>
-        <td><code>groups</code></td>
-        <td><span class="badge badge-admin">Admin</span></td>
-        <td><code>groups</code></td>
-        <td>Manage custom broadcast groups (add, remove, broadcast).</td>
-      </tr>
-      <tr>
-        <td><code>#stats</code></td>
-        <td><span class="badge badge-admin">Admin</span></td>
-        <td><code>#stats</code></td>
-        <td>Live workforce analytics and department breakdown.</td>
+        <td><strong>5. Gallery & Media</strong></td>
+        <td><code>5</code> or <code>gallery</code></td>
+        <td><code>messages</code>, <code>audio</code>, <code>pdf</code>, <code>media</code>, <code>photos</code>, <code>videos</code></td>
+        <td>Digital library for sermons, study guides, and multimedia.</td>
       </tr>
     </tbody>
   </table>
 
-  <div style="margin-top: 36px; padding-top: 18px; border-top: 2px solid var(--border-color); text-align: center; color: var(--text-muted); font-size: 11px;">
+  <h2>9. Complete WhatsApp Commands Catalog</h2>
+  <table class="avoid-break">
+    <thead>
+      <tr>
+        <th>Command</th>
+        <th>Min Role</th>
+        <th>Syntax / Example</th>
+        <th>Response Summary</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>menu</code>, <code>help</code></td>
+        <td><span class="badge badge-guest">Public</span></td>
+        <td><code>menu</code></td>
+        <td>Sends interactive category menu tailored to the user's role.</td>
+      </tr>
+      <tr>
+        <td><code>search &lt;query&gt;</code></td>
+        <td><span class="badge badge-unit">Unit Head</span></td>
+        <td><code>search David</code></td>
+        <td>Case-insensitive search across name, phone, unit, role, address.</td>
+      </tr>
+      <tr>
+        <td><code>info</code>, <code>status</code></td>
+        <td><span class="badge badge-worker">Worker</span></td>
+        <td><code>info</code></td>
+        <td>Returns full worker profile, designation, DLI/DCA status, HOD details.</td>
+      </tr>
+      <tr>
+        <td><code>schedule</code>, <code>duty</code></td>
+        <td><span class="badge badge-worker">Worker</span></td>
+        <td><code>schedule</code></td>
+        <td>Fetches upcoming department duty schedules, dates, and venues.</td>
+      </tr>
+      <tr>
+        <td><code>departments</code></td>
+        <td><span class="badge badge-guest">Public</span></td>
+        <td><code>departments</code> / <code>departments media</code></td>
+        <td>Lists all church departments, HOD contact info, and active units.</td>
+      </tr>
+      <tr>
+        <td><code>organogram</code></td>
+        <td><span class="badge badge-worker">Worker</span></td>
+        <td><code>organogram</code></td>
+        <td>Displays church structural leadership hierarchy outline.</td>
+      </tr>
+      <tr>
+        <td><code>events</code>, <code>services</code></td>
+        <td><span class="badge badge-guest">Public</span></td>
+        <td><code>events</code></td>
+        <td>Weekly celebration schedule plus special upcoming programs.</td>
+      </tr>
+      <tr>
+        <td><code>announcements</code></td>
+        <td><span class="badge badge-guest">Public</span></td>
+        <td><code>announcements</code></td>
+        <td>Latest news and bulletins targeted to worker's department or all church.</td>
+      </tr>
+      <tr>
+        <td><code>offering</code>, <code>tithe</code></td>
+        <td><span class="badge badge-guest">Public</span></td>
+        <td><code>offering</code></td>
+        <td>Verified Zenith & GTBank accounts for offerings and tithes.</td>
+      </tr>
+      <tr>
+        <td><code>donations</code>, <code>projects</code></td>
+        <td><span class="badge badge-guest">Public</span></td>
+        <td><code>donations</code></td>
+        <td>Active church projects and designated donation payment details.</td>
+      </tr>
+      <tr>
+        <td><code>pending</code></td>
+        <td><span class="badge badge-unit">Unit Head</span></td>
+        <td><code>pending</code></td>
+        <td>Lists pending worker registrations with quick approve numbers.</td>
+      </tr>
+      <tr>
+        <td><code>accept &lt;#&gt;</code> / <code>a&lt;#&gt;</code></td>
+        <td><span class="badge badge-unit">Unit Head</span></td>
+        <td><code>accept 1</code> or <code>a1</code></td>
+        <td>Approves pending applicant #1 and adds them to workforce.</td>
+      </tr>
+      <tr>
+        <td><code>reject &lt;#&gt;</code> / <code>r&lt;#&gt;</code></td>
+        <td><span class="badge badge-unit">Unit Head</span></td>
+        <td><code>reject 1</code> or <code>r1</code></td>
+        <td>Declines pending applicant #1 with optional reason note.</td>
+      </tr>
+      <tr>
+        <td><code>members</code></td>
+        <td><span class="badge badge-unit">Unit Head</span></td>
+        <td><code>members</code></td>
+        <td>Directory of active workers in unit (Unit Head), dept (HOD), or all (Admin).</td>
+      </tr>
+      <tr>
+        <td><code>make unit head &lt;n&gt; &lt;u&gt;</code></td>
+        <td><span class="badge badge-hod">HOD</span></td>
+        <td><code>make unit head David Sound</code></td>
+        <td>Appoints registered worker as Head of Unit with unit broadcast power.</td>
+      </tr>
+      <tr>
+        <td><code>add announcement</code></td>
+        <td><span class="badge badge-unit">Unit Head</span></td>
+        <td><code>add announcement</code></td>
+        <td>Sends announcement submission template (Title, Message, Scope).</td>
+      </tr>
+      <tr>
+        <td><code>add event</code></td>
+        <td><span class="badge badge-unit">Unit Head</span></td>
+        <td><code>add event</code></td>
+        <td>Sends event submission template (Title, Date YYYY-MM-DD, Time, Venue).</td>
+      </tr>
+      <tr>
+        <td><code>schedule template</code></td>
+        <td><span class="badge badge-unit">Unit Head</span></td>
+        <td><code>schedule template</code></td>
+        <td>Sends the copy-paste duty schedule template with date, time, venue, and worker tags.</td>
+      </tr>
+      <tr>
+        <td><code>manage schedules</code></td>
+        <td><span class="badge badge-unit">Unit Head</span></td>
+        <td><code>manage schedules</code></td>
+        <td>Lists all active duty rosters created by or assigned to your department/unit with delete IDs.</td>
+      </tr>
+      <tr>
+        <td><code>#delschedule &lt;id&gt;</code></td>
+        <td><span class="badge badge-unit">Unit Head</span></td>
+        <td><code>#delschedule 1a2b3c...</code></td>
+        <td>Removes a scheduled duty assignment and cancels remaining reminders.</td>
+      </tr>
+      <tr>
+        <td><code>#checkschedules</code></td>
+        <td><span class="badge badge-hod">HOD</span></td>
+        <td><code>#checkschedules</code></td>
+        <td>Manually triggers the 2-day and 1-day reminder engine and returns a dispatch count report.</td>
+      </tr>
+      <tr>
+        <td><code>#stats</code></td>
+        <td><span class="badge badge-admin">Admin</span></td>
+        <td><code>#stats</code></td>
+        <td>Summary metrics: total workers, active count, department breakdown.</td>
+      </tr>
+      <tr>
+        <td><code>#addworkers</code></td>
+        <td><span class="badge badge-admin">Admin</span></td>
+        <td><code>#addworkers &lt;blocks&gt;</code></td>
+        <td>Bulk imports workers from multi-block registration text.</td>
+      </tr>
+      <tr>
+        <td><code>#birthdays</code></td>
+        <td><span class="badge badge-admin">Admin</span></td>
+        <td><code>#birthdays</code></td>
+        <td>Manually triggers daily birthday scanner and sends celebration messages.</td>
+      </tr>
+      <tr>
+        <td><code>#backup</code> / <code>backup db</code></td>
+        <td><span class="badge badge-admin">Admin</span></td>
+        <td><code>#backup</code></td>
+        <td>Generates and delivers an instant DB binary (.db) & full JSON dump to WhatsApp.</td>
+      </tr>
+      <tr>
+        <td><em>File Upload (.xlsx/.csv)</em></td>
+        <td><span class="badge badge-admin">Admin</span></td>
+        <td>Attach spreadsheet</td>
+        <td>Ingests Excel/CSV spreadsheet and imports hundreds of workers instantly.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Duty Schedule Roster Management & Automated Reminders</h3>
+  <div class="callout tip avoid-break">
+    <div class="callout-icon">📋</div>
+    <div>
+      <strong>Standard Copy-Paste Schedule Creation Template:</strong><br>
+      Admins, HODs, and Unit Heads can create duty assignments by sending the standard template below:
+      <pre style="margin-top:8px; font-size:9pt; background:#f4f6f8; padding:8px; border-radius:4px;">
+Title: Sunday 1st Service Duty Roster
+Date: 2026-10-12
+Time: 07:00 AM
+Venue: Main Sanctuary
+Department: media
+Unit: Livestream & Camera
+Scope: unit
+Workers: 08101889830, 08144527833
+Description: Video switcher, camera operations, sound check, and stream monitoring.</pre>
+      <strong>Automated Notification & Reminder Engine:</strong>
+      <ul>
+        <li><strong>Instant Publication:</strong> When published, all assigned workers in the designated scope receive an immediate notification over WhatsApp and Telegram.</li>
+        <li><strong>2-Day Advance Reminder (48h):</strong> Workers receive a friendly reminder 2 days before the scheduled date with venue, time, and preparation guidance.</li>
+        <li><strong>1-Day Advance Reminder (24h):</strong> An urgent final reminder is sent 1 day before the scheduled duty.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Automated Daily Database Backup (Cron Schedule)</h3>
+  <div class="callout success avoid-break">
+    <div class="callout-icon">🛡️</div>
+    <div>
+      <strong>Automated Nightly Backup Engine:</strong><br>
+      The system runs a background cron task every day at <strong>02:00 AM WAT</strong>. It automatically packages the entire SQLite database file (<code>.db</code>) along with the WhatsApp authentication credentials (<code>creds.json</code>) and a complete structured JSON record dump, delivering them directly via WhatsApp document message to the primary technical administrator (<strong>+2348101889830</strong>).
+      <br><br>
+      <strong>On-Demand Trigger:</strong> Authorized administrators and <code>+2348101889830</code> can also trigger an immediate backup at any time by sending <code>#backup</code>, <code>backup db</code>, or <code>backup database</code> on WhatsApp.
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- ========================================== -->
+  <!-- PART V: GALLERY & COMING SOON -->
+  <!-- ========================================== -->
+  <h1>Part V: Gallery, Resources & Coming Soon</h1>
+
+
+  <h2>10. Gallery & Digital Media Portal</h2>
+  <p>
+    The Gallery portal provides access to digital sermons, study guides, and multimedia content.
+  </p>
+
+  <table class="avoid-break">
+    <thead>
+      <tr>
+        <th>Sub-Module</th>
+        <th>Trigger Commands</th>
+        <th>Current Status</th>
+        <th>Exact Bot Response Template</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Sermon Messages (Main)</strong></td>
+        <td><code>messages</code>, <code>sermons</code>, <code>sermon</code></td>
+        <td><span class="badge badge-soon">Coming Soon</span></td>
+        <td>"Audio sermons, podcasts, and digital PDF study outlines are currently being curated and will be available soon!"</td>
+      </tr>
+      <tr>
+        <td><strong>Audio Sermons</strong></td>
+        <td><code>audio</code>, <code>podcasts</code>, <code>sermon audio</code></td>
+        <td><span class="badge badge-soon">Coming Soon</span></td>
+        <td>"Sunday sermon recordings, worship tracks, and podcast episodes are currently being prepared for direct streaming and download."</td>
+      </tr>
+      <tr>
+        <td><strong>PDF Study Guides</strong></td>
+        <td><code>pdf</code>, <code>sermon notes</code>, <code>outlines</code></td>
+        <td><span class="badge badge-soon">Coming Soon</span></td>
+        <td>"Weekly sermon study outlines, DLI course materials, and monthly devotionals will be available for download shortly."</td>
+      </tr>
+      <tr>
+        <td><strong>Media Gallery (Main)</strong></td>
+        <td><code>media</code>, <code>media gallery</code></td>
+        <td><span class="badge badge-soon">Coming Soon</span></td>
+        <td>"High-definition service photo albums, program recap videos, and media archives are currently in development and coming soon!"</td>
+      </tr>
+      <tr>
+        <td><strong>Photo Albums</strong></td>
+        <td><code>photos</code>, <code>photo</code>, <code>pictures</code></td>
+        <td><span class="badge badge-soon">Coming Soon</span></td>
+        <td>"Sunday service photos, special program galleries, and workforce memories are being organized and will be available soon!"</td>
+      </tr>
+      <tr>
+        <td><strong>Video Highlights</strong></td>
+        <td><code>videos</code>, <code>video</code>, <code>highlights</code></td>
+        <td><span class="badge badge-soon">Coming Soon</span></td>
+        <td>"Service ministrations, choir worship highlights, drama presentations, and recap videos are being processed and will be published shortly."</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="chat-box whatsapp avoid-break">
+    <div class="chat-header">
+      <span class="platform">🟢 WhatsApp • Coming Soon Resource Response</span>
+      <span>Command: audio / podcasts</span>
+    </div>
+    <div class="chat-bubble">✨ *FEATURE COMING SOON!*
+────────────────────────────
+📌 *Audio Messages & Sermons*
+
+Sunday sermon recordings, worship tracks, and podcast episodes are currently being prepared for direct streaming and download.
+
+_We are working hard to make this feature available in an upcoming update!_
+
+↩️ _Type *gallery* to browse other resources or *menu* to return._</div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- ========================================== -->
+  <!-- PART VI: TELEGRAM BOT & APPENDIX -->
+  <!-- ========================================== -->
+  <h1>Part VI: Telegram Bot & Operational SOPs</h1>
+
+  <h2>11. Telegram Bot Integration</h2>
+  <table class="avoid-break">
+    <thead>
+      <tr>
+        <th>Slash Command</th>
+        <th>Role Scope</th>
+        <th>Description & Interactive Features</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>/start</code>, <code>/menu</code></td>
+        <td><span class="badge badge-guest">Public</span></td>
+        <td>Main interactive grid: 👤 Profile, 🏛️ Church Info, 💳 Giving, 👑 Leadership, 🎨 Gallery.</td>
+      </tr>
+      <tr>
+        <td><code>/search &lt;query&gt;</code></td>
+        <td><span class="badge badge-unit">Unit Head</span></td>
+        <td>Case-insensitive search across name, phone, unit, role in leadership scope.</td>
+      </tr>
+      <tr>
+        <td><code>/info</code>, <code>/status</code></td>
+        <td><span class="badge badge-worker">Worker</span></td>
+        <td>Full profile display with @username, phone, and leadership badges.</td>
+      </tr>
+      <tr>
+        <td><code>/schedule</code>, <code>/duty</code></td>
+        <td><span class="badge badge-worker">Worker</span></td>
+        <td>Department duty schedules and upcoming service dates.</td>
+      </tr>
+      <tr>
+        <td><code>/departments</code></td>
+        <td><span class="badge badge-guest">Public</span></td>
+        <td>Interactive department browser with drill-down buttons.</td>
+      </tr>
+      <tr>
+        <td><code>/events</code></td>
+        <td><span class="badge badge-guest">Public</span></td>
+        <td>Service calendar with inline <code>[ 🗑️ Delete Event ]</code> buttons for organizers.</td>
+      </tr>
+      <tr>
+        <td><code>/announcements</code></td>
+        <td><span class="badge badge-guest">Public</span></td>
+        <td>Church bulletins with inline <code>[ 🗑️ Delete ]</code> buttons for authors.</td>
+      </tr>
+      <tr>
+        <td><code>/pending</code></td>
+        <td><span class="badge badge-unit">Unit Head</span></td>
+        <td>Pending registrations with inline <code>[ ✅ Approve ]</code> and <code>[ ❌ Reject ]</code> buttons.</td>
+      </tr>
+      <tr>
+        <td><code>/members</code></td>
+        <td><span class="badge badge-unit">Unit Head</span></td>
+        <td>Workforce member directory list.</td>
+      </tr>
+      <tr>
+        <td><code>/broadcast &lt;unit|dept|all&gt; &lt;msg&gt;</code></td>
+        <td><span class="badge badge-unit">Unit Head</span></td>
+        <td>Dispatches broadcast notifications to targeted scope.</td>
+      </tr>
+      <tr>
+        <td><code>/stats</code></td>
+        <td><span class="badge badge-admin">Admin</span></td>
+        <td>Displays workforce summary analytics and department headcounts.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>12. Bulk Import Spreadsheet Column Mapping (.csv / .xlsx)</h2>
+  <table class="avoid-break">
+    <thead>
+      <tr>
+        <th>Expected Field</th>
+        <th>Accepted Column Headers</th>
+        <th>Example</th>
+        <th>Required?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Full Name</strong></td>
+        <td><code>Full Name</code>, <code>Name</code>, <code>Worker Name</code></td>
+        <td><code>Brother Samuel Adeyemi</code></td>
+        <td>✅ Mandatory</td>
+      </tr>
+      <tr>
+        <td><strong>Phone Number</strong></td>
+        <td><code>Phone Number</code>, <code>Phone</code>, <code>Mobile</code>, <code>WhatsApp</code></td>
+        <td><code>08012345678</code> or <code>+2348012345678</code></td>
+        <td>✅ Mandatory (Unique)</td>
+      </tr>
+      <tr>
+        <td><strong>Department</strong></td>
+        <td><code>Department</code>, <code>Dept</code></td>
+        <td><code>media</code>, <code>choir</code>, <code>ushering</code>, <code>protocol</code>, <code>prayer</code>, <code>children</code>, <code>welfare</code></td>
+        <td>✅ Mandatory</td>
+      </tr>
+      <tr>
+        <td><strong>Unit</strong></td>
+        <td><code>Unit</code>, <code>Sub-unit</code>, <code>Team</code></td>
+        <td><code>IT/Livestream</code>, <code>Sound</code>, <code>Camera</code>, <code>Soprano</code></td>
+        <td>Optional</td>
+      </tr>
+      <tr>
+        <td><strong>Role</strong></td>
+        <td><code>Role</code>, <code>Position</code>, <code>Designation</code></td>
+        <td><code>Member</code>, <code>Sound Lead</code>, <code>Coordinator</code></td>
+        <td>Default: <code>Member</code></td>
+      </tr>
+      <tr>
+        <td><strong>Birthday</strong></td>
+        <td><code>Birthday</code>, <code>DOB</code>, <code>Date of Birth</code></td>
+        <td><code>21 Aug</code> or <code>1992-08-21</code></td>
+        <td>Optional</td>
+      </tr>
+      <tr>
+        <td><strong>Marital Status</strong></td>
+        <td><code>Marital Status</code>, <code>Status</code></td>
+        <td><code>Single</code> or <code>Married</code></td>
+        <td>Optional</td>
+      </tr>
+      <tr>
+        <td><strong>DLI / DCA</strong></td>
+        <td><code>DLI</code>, <code>DCA</code>, <code>Encounter</code></td>
+        <td><code>Yes</code> or <code>No</code></td>
+        <td>Optional</td>
+      </tr>
+      <tr>
+        <td><strong>Address</strong></td>
+        <td><code>Address</code>, <code>Residence</code></td>
+        <td><code>Block 4, Flat 2, Phase 4, Kubwa, Abuja</code></td>
+        <td>Optional</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="margin-top: 32px; padding-top: 16px; border-top: 2px solid var(--border-color); text-align: center; color: var(--text-muted); font-size: 11px;">
     <strong>DOMINION CITY KUBWA • WORKFORCE MANAGEMENT BOT SYSTEM</strong><br>
     © 2026 Dominion City Kubwa. All rights reserved. • Raising leaders that transform society.
   </div>

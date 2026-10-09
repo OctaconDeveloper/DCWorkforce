@@ -14,7 +14,7 @@ import { BroadcastModule } from '../broadcast/broadcast.module';
     DepartmentsModule,
     EventsModule,
     AnnouncementsModule,
-    SchedulesModule,
+    forwardRef(() => SchedulesModule),
     AdminModule,
     forwardRef(() => BroadcastModule),
   ],

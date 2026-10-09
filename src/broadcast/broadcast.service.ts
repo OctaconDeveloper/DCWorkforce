@@ -38,7 +38,14 @@ export class BroadcastService {
   }
 
   /**
-   * Send broadcast message or media to a list of workers with rate throttling across WhatsApp & Telegram
+   * Helper: Generate a random delay in milliseconds between min and max (default: 3000ms - 5000ms)
+   */
+  private getRandomDelay(minMs = 3000, maxMs = 5000): number {
+    return Math.floor(Math.random() * (maxMs - minMs + 1)) + minMs;
+  }
+
+  /**
+   * Send broadcast message or media to a list of workers with 3-5s rate throttling across WhatsApp & Telegram
    */
   private async dispatchBroadcast(
     workers: Worker[],
@@ -54,10 +61,20 @@ export class BroadcastService {
       ? `📢 *[${senderTitle}]*\n\n${messageText.trim()}`
       : messageText.trim();
 
-    for (const worker of workers) {
+    // 1. Initial 3 to 5 seconds buffer delay before sending the first broadcast message
+    if (totalTargeted > 0) {
+      const initialDelay = this.getRandomDelay(3000, 5000);
+      this.logger.log(
+        `⏳ Safe Throttling: Pausing ${initialDelay}ms (3-5s) before starting broadcast dispatch to ${totalTargeted} worker(s)...`,
+      );
+      await new Promise((resolve) => setTimeout(resolve, initialDelay));
+    }
+
+    for (let i = 0; i < workers.length; i++) {
+      const worker = workers[i];
       let isDelivered = false;
 
-      // 1. WhatsApp Delivery
+      // WhatsApp Delivery
       const recipientJid = this.getWorkerJid(worker);
       try {
         if (media) {
@@ -99,7 +116,7 @@ export class BroadcastService {
         this.logger.warn(`WhatsApp broadcast failed for ${worker.fullName}: ${err.message}`);
       }
 
-      // 2. Telegram Delivery (if worker has linked Telegram)
+      // Telegram Delivery (if worker has linked Telegram)
       if (worker.telegramId) {
         try {
           if (media && media.type === 'image') {
@@ -121,8 +138,14 @@ export class BroadcastService {
         failedCount++;
       }
 
-      // Small throttling delay to protect socket connection
-      await new Promise((resolve) => setTimeout(resolve, 200));
+      // Safe anti-ban throttling delay of 3 to 5 seconds between each broadcast recipient
+      if (i < workers.length - 1) {
+        const intervalDelay = this.getRandomDelay(3000, 5000);
+        this.logger.log(
+          `⏱️ Broadcast progress: ${deliveredCount}/${totalTargeted} sent. Waiting ${intervalDelay}ms (3-5s) before next recipient...`,
+        );
+        await new Promise((resolve) => setTimeout(resolve, intervalDelay));
+      }
     }
 
     return {
@@ -132,6 +155,7 @@ export class BroadcastService {
       targetDescription: senderTitle,
     };
   }
+
 
   /**
    * 1. Head of Unit: Broadcast to all workers in their unit

@@ -99,20 +99,30 @@ model RegistrationRequest {
 }
 
 model Schedule {
-  id          String   @id @default(uuid())
-  department  String   // choir, ushering, media, protocol, prayer, children, welfare
-  title       String
-  date        String   // YYYY-MM-DD format
-  time        String   // e.g. 08:00 AM
-  venue       String
-  description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id                String   @id @default(uuid())
+  department        String   // choir, ushering, media, protocol, prayer, children, welfare
+  title             String
+  date              String   // YYYY-MM-DD format
+  time              String   // e.g. 08:00 AM
+  venue             String
+  description       String?
+  targetScope       String   @default("DEPARTMENT") // ALL, DEPARTMENT, UNIT, WORKER
+  targetUnit        String?  // e.g. IT / Livestream & Broadcast, Sound
+  targetWorkers     String?  // Comma-separated list or JSON array of worker phones or names
+  createdBy         String?  // Creator name / Admin / HOD
+  creatorRole       String?  // ADMIN, HOD, UNIT_HEAD
+  reminderSent2Days Boolean  @default(false)
+  reminderSent1Day  Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
   @@index([department])
   @@index([date])
+  @@index([targetScope])
+  @@index([targetUnit])
   @@map("schedules")
 }
+
 
 model Announcement {
   id               String   @id @default(uuid())

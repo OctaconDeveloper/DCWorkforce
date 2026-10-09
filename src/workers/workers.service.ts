@@ -4,6 +4,7 @@ import {
   ConflictException,
   BadRequestException,
   Logger,
+  OnModuleInit,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { DepartmentsService } from '../departments/departments.service';
@@ -23,7 +24,7 @@ export interface BulkImportResult {
 }
 
 @Injectable()
-export class WorkersService {
+export class WorkersService implements OnModuleInit {
   private readonly logger = new Logger(WorkersService.name);
 
   constructor(
@@ -31,9 +32,87 @@ export class WorkersService {
     private readonly departmentsService: DepartmentsService,
   ) {}
 
+  async onModuleInit() {
+    await this.ensureMediaHODExists();
+  }
+
+  /**
+   * Ensure +2348101889830 is initialized as Media Head of Department (HOD) - Dr. David Araka
+   */
+  async ensureMediaHODExists() {
+    try {
+      const mediaHodPhone = '2348101889830';
+      const mediaHodLid = '123428854100150@lid';
+
+      const existing = await this.prisma.worker.findFirst({
+        where: {
+          OR: [
+            { phone: mediaHodPhone },
+            { lid: mediaHodLid },
+            { fullName: { contains: 'David Araka' } },
+          ],
+        },
+      });
+
+      if (existing) {
+        await this.prisma.worker.update({
+          where: { id: existing.id },
+          data: {
+            fullName: existing.fullName || 'Dr. David Araka',
+            phone: mediaHodPhone,
+            lid: mediaHodLid,
+            department: 'media',
+            role: 'Head of Department',
+            isHOD: true,
+            isActive: true,
+          },
+        });
+        this.logger.log(`🎬 Verified and synced Dr. David Araka as Media Head of Department (${mediaHodPhone})`);
+      } else {
+        await this.prisma.worker.create({
+          data: {
+            fullName: 'Dr. David Araka',
+            phone: mediaHodPhone,
+            department: 'media',
+            unit: 'Media Operations',
+            role: 'Head of Department',
+            isHOD: true,
+            isUnitHead: false,
+            isActive: true,
+            lid: mediaHodLid,
+            address: 'Dominion City Kubwa, Abuja',
+          },
+        });
+        this.logger.log(`🎬 Created and initialized Dr. David Araka as Media Head of Department (${mediaHodPhone})`);
+      }
+    } catch (err: any) {
+      this.logger.warn(`Could not ensure Media HOD initialization: ${err.message}`);
+    }
+  }
+
+  /**
+   * Format phone number for clean human display (e.g. +2348101889830)
+   */
+  formatDisplayPhone(phone: string): string {
+    if (!phone) return 'Not specified';
+    const clean = phone.replace(/\D/g, '');
+    if (clean.startsWith('234') && clean.length === 13) {
+      return `+${clean}`;
+    }
+    if (clean.startsWith('0') && clean.length === 11) {
+      return `+234${clean.substring(1)}`;
+    }
+    if (clean.length > 13) {
+      return `+${clean}`;
+    }
+    return clean ? `+${clean}` : 'Not specified';
+  }
+
   /**
    * Normalizes phone number into international numeric string (e.g. 2348012345678)
    */
+
+
   normalizePhoneNumber(rawPhone: string): string {
     if (!rawPhone) return '';
     let cleaned = rawPhone.replace('@s.whatsapp.net', '').replace('@c.us', '').trim();

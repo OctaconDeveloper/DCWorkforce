@@ -8,6 +8,8 @@ import { BroadcastModule } from '../broadcast/broadcast.module';
 import { AdminModule } from '../admin/admin.module';
 import { DepartmentsModule } from '../departments/departments.module';
 import { BirthdayNotifierService } from './birthday-notifier.service';
+import { DatabaseBackupService } from './database-backup.service';
+import { WhatsAppQueueService } from './whatsapp-queue.service';
 import {
   MenuCommandService,
   InfoCommandService,
@@ -47,7 +49,7 @@ const COMMAND_SERVICES = [
 @Module({
   imports: [
     WorkersModule,
-    SchedulesModule,
+    forwardRef(() => SchedulesModule),
     AnnouncementsModule,
     EventsModule,
     forwardRef(() => BroadcastModule),
@@ -57,12 +59,18 @@ const COMMAND_SERVICES = [
   providers: [
     WhatsappService,
     BirthdayNotifierService,
+    DatabaseBackupService,
+    WhatsAppQueueService,
     ...COMMAND_SERVICES,
   ],
   exports: [
     WhatsappService,
     BirthdayNotifierService,
+    DatabaseBackupService,
+    WhatsAppQueueService,
     ...COMMAND_SERVICES,
   ],
 })
 export class WhatsappModule {}
+
+
