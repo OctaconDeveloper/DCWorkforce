@@ -6,9 +6,9 @@
 .env
 
 # WhatsApp Baileys Auth Session
-/auth_info_baileys
-auth_info_baileys/
-*.session
+# /auth_info_baileys
+# auth_info_baileys/
+# *.session
 
 # Logs
 logs
@@ -20,4 +20,4 @@ yarn-error.log*
 # OS Files
 .DS_Store
 Thumbs.db
-whatsapp-auth
+# whatsapp-auth
