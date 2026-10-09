@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'dc-kubwa-workforce',
+      name: 'dcw',
       script: 'dist/main.js',
       // Run in fork mode with a single instance to prevent duplicate WhatsApp Baileys socket sessions & SQLite locks
       instances: 1,
