@@ -1,5 +1,5 @@
 {
-  "name": "dc-kubwa-workforce",
+  "name": "dcw",
   "version": "1.0.0",
   "description": "DC Kubwa Workforce Management System with NestJS, Prisma ORM, SQLite/PostgreSQL/MySQL and Baileys WhatsApp Bot",
   "author": "Church Admin",
