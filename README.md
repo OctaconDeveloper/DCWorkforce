@@ -248,6 +248,38 @@ curl -X POST http://localhost:3000/announcements \
 
 ---
 
+## ⚡ PM2 Process Management
+
+For VPS / dedicated server deployments (Ubuntu, Debian, EC2, DigitalOcean, etc.), PM2 keeps the NestJS application and Baileys WhatsApp bot running continuously with automatic restarts.
+
+### Quick PM2 Commands
+```bash
+# Build production bundle
+npm run build
+
+# Start the application with PM2 in production mode
+npm run pm2:start
+
+# View live logs (including WhatsApp QR pairing code)
+npm run pm2:logs
+
+# Check real-time process monitoring & memory
+npm run pm2:monit
+
+# Restart or reload application
+npm run pm2:restart
+npm run pm2:reload
+
+# Stop or remove process
+npm run pm2:stop
+npm run pm2:delete
+```
+
+> [!NOTE]
+> `ecosystem.config.js` is pre-configured with `instances: 1` and `exec_mode: 'fork'`. This ensures single-instance execution so the Baileys WhatsApp Web socket and SQLite database do not encounter multi-instance concurrency locks.
+
+---
+
 ## 🚢 Deployment to Railway.app
 
 1. Connect your repository to **Railway**.
@@ -260,3 +292,4 @@ curl -X POST http://localhost:3000/announcements \
    - `AUTH_FOLDER_PATH`: `/app/auth_info_baileys`
 3. Attach a persistent volume to mount at `/app/auth_info_baileys` so WhatsApp session keys persist across deploys.
 4. Deploy and check Railway logs to scan the WhatsApp pairing QR code!
+
